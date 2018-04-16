@@ -11,5 +11,5 @@ const config = {
 
 export const firebaseApp = firebase.initializeApp(config);
 export const customerInfo = firebase.database().ref('Customers');
-export const usersRef = firebase.database().ref('Users');
+export const userRef = firebase.database().ref('Users');
 // export const completeGoalRef = firebase.database().ref('completeGoals')

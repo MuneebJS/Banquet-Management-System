@@ -4,7 +4,8 @@ import { firebaseApp } from '../firebase';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
-import { usersRef } from '../firebase';
+import { userRef } from '../firebase';
+import Error from './Error';
 // injectTapEventPlugin();
 class SignUp extends Component {
     constructor(props) {
@@ -12,25 +13,41 @@ class SignUp extends Component {
         this.state = {
             email: '',
             password: '',
+            firstName: '',
+            lastName: '',
+            phoneNumber: '',
             error: {
                 message: ''
             }
         }
     }
     signUp() {
-        // console.log('this.state', this.state);
         const { email, password } = this.state;
         firebaseApp.auth().createUserWithEmailAndPassword(email, password)
             .then(userInfo => {
-                console.log("userInfor", userInfo.val())
+                const nestedRef = userRef.child(userInfo.uid + '/');
+                nestedRef.set({
+                    email: userInfo.email,
+                    role: this.props.match.params.role,
+                    firstName: this.state.firstName,
+                    lastName: this.state.lastName,
+                    phoneNumber: this.state.phoneNumber,
+                })
+                    .then(result => {
+                        this.props.history.push("/list");
+                    }).catch(error => {
+                        this.setState({ error })
+                    });
             })
             .catch(error => {
+                console.log("errr", error)
                 this.setState({ error })
-            })
+            });
     }
 
 
     render() {
+        console.log(this.props)
         return (
             <MuiThemeProvider>
                 <div>
@@ -41,18 +58,21 @@ class SignUp extends Component {
                             <h2>Sign Up</h2>
                         </div>
                         <div className='form-group' style={{ marginLeft: '20%', marginRight: '20%' }}>
-                            <input className="form-control" type="text" placeholder='email' onChange={event => this.setState({ email: event.target.value })} style={{ marginRight: '5px' }} />
-                            <br />
-                            <input className='form-control' type="password" placeholder='Password' onChange={event => this.setState({ password: event.target.value })} style={{ marginRight: '5px' }} />
+                            <div> <input className="form-control reg-input" type="text" placeholder='email' onChange={event => this.setState({ email: event.target.value })} /></div>
+                            <div> <input className="form-control reg-input" type="text" placeholder='First Name' onChange={event => this.setState({ firstName: event.target.value })} /></div>
+                            <div> <input className="form-control reg-input" type="text" placeholder='Last Name' onChange={event => this.setState({ lastName: event.target.value })} /></div>
+                            <div> <input className="form-control reg-input" type="text" placeholder='Phone Number' onChange={event => this.setState({ phoneNumber: event.target.value })} /></div>
+
+                            <div><input className='form-control reg-input' type="password" placeholder='Password' onChange={event => this.setState({ password: event.target.value })} /></div>
                         </div>
+
                         <div style={{ marginTop: '5px', textAlign: 'center' }}>
                             <button className='btn btn-primary' type='button' onClick={() => this.signUp()}>Sign Up</button>
                         </div>
                         <div style={{ textAlign: 'center', marginTop: '5px' }}>
                             <Link to='/signin'> Already a user? Sign in instead</Link>
-                            <br />
-                            {this.state.error.message}
                         </div>
+                        <Error />
                     </div>
                 </div>
             </MuiThemeProvider>

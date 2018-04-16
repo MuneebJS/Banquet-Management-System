@@ -39,7 +39,7 @@ class App extends Component {
               <Header>
                 <Route path="/app" component={app} />
                 <Route path="/signin" component={SignIn} />
-                <Route path="/signup" component={SignUp} />
+                <Route path="/signup/:role" component={SignUp} />
                 <Route path="/list" component={banquetList} />
                 <Route path="/NMG" component={NMG} />
                 <Route path="/booking" component={BookingForm} />
