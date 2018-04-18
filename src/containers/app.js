@@ -14,7 +14,7 @@ import Avatar from 'material-ui/Avatar';
 import { NavLink, Link } from 'react-router-dom';
 import FlatButton from 'material-ui/FlatButton';
 import Logout from 'material-ui/svg-icons/action/power-settings-new';
-import list from './banquetList';
+import list from './BanquetList';
 
 const logoutStyles = {
     marginTop: 265

@@ -6,7 +6,7 @@ import './global.css';
 import app from './containers/app.js';
 import SignUp from './containers/SignUp.js';
 import SignIn from './containers/SignIn.js';
-import list from './containers/banquetList';
+// import list from './containers/BanquetList';
 import { Router, Route } from 'react-router-dom';
 import createBrowserHistory from 'history/createBrowserHistory';
 import { Provider } from 'react-redux'
@@ -15,11 +15,12 @@ import { firebaseApp } from './firebase'
 import reducer from './reducers'
 import { logUser } from './actions'
 import Bootstrap from 'bootstrap/dist/css/bootstrap.css';
-import banquetList from './containers/banquetList';
+import BanquetList from './containers/BanquetList';
 import NMG from './containers/NMG';
-// import PB from './containers/PB';
-import Majestic from './containers/majestic';
-import majestic from './containers/majestic';
+import AddBanquet from './containers/AddBanquet';
+import PrivateRoute from './PrivateRoute';
+
+import Majestic from './containers/Majestic';
 import BanquetDetail from './containers/BanquetDetail';
 import Header from './components/Header';
 import BookingForm from './containers/BookingForm';
@@ -40,11 +41,13 @@ class App extends Component {
                 <Route path="/app" component={app} />
                 <Route path="/signin" component={SignIn} />
                 <Route path="/signup/:role" component={SignUp} />
-                <Route path="/list" component={banquetList} />
+                <Route path="/list" component={BanquetList} />
                 <Route path="/NMG" component={NMG} />
-                <Route path="/booking" component={BookingForm} />
-                <Route path="/Majestic" component={majestic} />
-                <Route path="/baquet/details" component={BanquetDetail} />
+                <Route path="/booking/:uid" component={BookingForm} />
+                <Route path="/Majestic" component={Majestic} />
+                <Route path="/baquetDetails/:uid" component={BanquetDetail} />
+                {/* <Route path="/addBanquet" component={AddBanquet} /> */}
+                <PrivateRoute path="/addBanquet" component={AddBanquet} />
               </Header>
             </Router>
           </div>

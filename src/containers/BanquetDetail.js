@@ -16,8 +16,11 @@ import FlatButton from 'material-ui/FlatButton';
 import Logout from 'material-ui/svg-icons/action/power-settings-new';
 import NMG from './NMG';
 // import PB from './PB';
-import Majestic from './majestic';
-
+import Majestic from './Majestic';
+import Loader from '../components/Loader';
+import Error from '../components/Error';
+import { banquetRef } from '../firebase';
+import * as firebase from 'firebase';
 
 const logoutStyles = {
     marginTop: 265
@@ -32,8 +35,40 @@ class BanquetDetail extends Component {
     constructor() {
         super();
         this.state = {
-            drawerOpened: false
+            drawerOpened: false,
+            details: {},
+            isError: false,
         }
+        this.reserveHand = this.reserveHand.bind(this);
+        this.getBanquetDetail = this.getBanquetDetail.bind(this);
+    }
+    componentDidMount() {
+        this.getBanquetDetail();
+        // const details = JSON.parse(sessionStorage.getItem('banquetDetails'));
+    }
+    componentWillUnmount() {
+        // sessionStorage.removeItem('banquetDetails')
+
+    }
+    getBanquetDetail() {
+        const banquetUID = this.props.match.params.uid;
+        firebase.database().ref('Banquets/' + banquetUID).once('value').then(snapshot => {
+            // console.log("result", snapshot);
+            this.setState({
+                details: snapshot.val(),
+            })
+        }).catch(error => {
+            console.log("error occured", error)
+            this.setState({
+                isError: true,
+            })
+        })
+    }
+    reserveHand() {
+        console.log("reserve clicked")
+        // sessionStorage.setItem('banquetUID', this.state.details.userUID);
+
+        this.props.history.push('/booking/' + this.state.details.userUID);
     }
     _toggleDrawer() {
         this.setState({
@@ -45,33 +80,31 @@ class BanquetDetail extends Component {
     }
 
     render() {
+        const { details } = this.state;
+        if (!details) return <Loader />
+        if (this.state.isError) return <Error>Something unexpected happened</Error>
         return (
             <MuiThemeProvider>
                 <div>
-                    <div>
-                        <Card>
-                            <CardMedia
-                                overlay={<CardTitle title="Overlay title" subtitle="Overlay subtitle" />}
-                            >
-                                <img
-                                    src="https://media.weddingz.in/images/bed39c320b1569a282d37b44f39c7f71/rajmahal-banquets-malad-west-mumbai.jpg"
-                                    alt=""
-                                    className="banquetDetailImg"
-                                />
-                            </CardMedia>
-                            <CardTitle title="Card title" subtitle="Card subtitle" />
-                            <CardText>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
-                                Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
-                                Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
-                          </CardText>
-                            <CardActions>
-                                <FlatButton label="Reserve" primary={true} />
-                                {/* <FlatButton label="Action2" /> */}
-                            </CardActions>
-                        </Card>
-                    </div>
+                    <Card>
+                        <CardMedia
+                            overlay={<CardTitle title={details.name} subtitle={details.location} />}
+                        >
+                            <img
+                                src="https://media.weddingz.in/images/bed39c320b1569a282d37b44f39c7f71/rajmahal-banquets-malad-west-mumbai.jpg"
+                                alt=""
+                                className="banquetDetailImg"
+                            />
+                        </CardMedia>
+                        <CardTitle title={details.name} subtitle={details.location} />
+                        <CardText>
+                            {details.description}
+                        </CardText>
+                        <CardActions>
+                            <FlatButton label="Reserve" primary={true} onClick={this.reserveHand} />
+                            {/* <FlatButton label="Action2" /> */}
+                        </CardActions>
+                    </Card>
                 </div>
             </MuiThemeProvider>
         )

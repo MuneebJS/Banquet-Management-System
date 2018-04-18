@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { firebaseApp, customerInfo } from '../firebase.js';
+import { firebaseApp, reservationRef } from '../firebase.js';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import DatePicker from 'material-ui/DatePicker';
 import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
 import { Card, CardHeader } from 'material-ui/Card';
@@ -15,6 +16,10 @@ import FlatButton from 'material-ui/FlatButton';
 import Logout from 'material-ui/svg-icons/action/power-settings-new';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
+import Loader from '../components/Loader';
+import Title from '../components/Title';
+import Error from '../components/Error';
+import { getUID } from '../lib/helpers.js';
 
 
 const logoutStyles = {
@@ -34,9 +39,10 @@ class BookingForm extends Component {
             Customer_name: '',
             Customer_address: '',
             Customer_cell: '',
-            Customer_age: '',
+            // Customer_age: '',
             Customer_email: '',
-            Booking_Date: ''
+            Booking_Date: '',
+            isError: false,
         }
         this.submitCustomer = this.submitCustomer.bind(this);
     }
@@ -47,19 +53,27 @@ class BookingForm extends Component {
     }
     submitCustomer(event) {
         event.preventDefault();
-        this.pref = customerInfo.child(this.state.Customer_name + '/');
-        this.pref.set({
-            Customer_name: this.state.Customer_name,
-            Customer_address: this.state.Customer_address,
-            Customer_cell: this.state.Customer_cell,
-            Customer_email: this.state.Customer_email,
-            Customer_age: this.state.Customer_age,
-            Booking_Date: this.state.Booking_Date
-        });
-    }
-
-    signOut() {
-        firebaseApp.auth().signOut();
+        const banquetUID = this.props.match.params.uid;
+        const nestedRef = reservationRef.child(banquetUID + '/');
+        nestedRef.push({
+            customerName: this.state.Customer_name,
+            customerAddress: this.state.Customer_address,
+            customerCell: this.state.Customer_cell,
+            customerEmail: this.state.Customer_email,
+            // Customer_age: this.state.Customer_age,
+            bookingDate: JSON.stringify(this.state.Booking_Date),
+            uid: getUID('userUID')
+        }).then(() => {
+            // console.log("successfull reserve")
+            this.setState({
+                isError: false
+            })
+        }).catch(err => {
+            console.log("err", err)
+            this.setState({
+                isError: true
+            })
+        })
     }
 
     render() {
@@ -71,28 +85,34 @@ class BookingForm extends Component {
         const { Booking_Date } = this.state;
         return (
             <MuiThemeProvider>
-                <div>
-                    <h2>Booking Form</h2>
-                    <div style={{ width: '60%', marginLeft: 20 }}>
-                        <TextField value={Customer_name} style={{ marginTop: -25 }} fullWidth={true} onChange={(event) => this.setState({ Customer_name: event.target.value })} hintText='Enter Full Name' floatingLabelText='Enter Full Name' />
+                <div style={{ marginLeft: '20%', marginRight: '20%' }}>
+                    <Title>Reservation Form</Title>
+                    {this.state.isError && < Error > Something unextpedt Happened</Error>}
+                    <div className="reg-input">
+                        <TextField value={Customer_name} fullWidth={true} onChange={(event) => this.setState({ Customer_name: event.target.value })} hintText='Enter Full Name' floatingLabelText='Enter Full Name' />
                     </div>
-                    <div style={{ width: '60%', marginLeft: 20 }}>
-                        <TextField value={Customer_address} style={{ marginTop: -25 }} fullWidth={true} onChange={(event) => this.setState({ Customer_address: event.target.value })} hintText='Enter Customer Address' floatingLabelText='Enter Customer Address' />
+                    <div className="reg-input">
+                        <TextField value={Customer_address} fullWidth={true} onChange={(event) => this.setState({ Customer_address: event.target.value })} hintText='Enter Customer Address' floatingLabelText='Enter Customer Address' />
                     </div>
-                    <div style={{ width: '60%', marginLeft: 20 }}>
-                        <TextField value={Customer_email} style={{ marginTop: -25 }} fullWidth={true} onChange={(event) => this.setState({ Customer_email: event.target.value })} hintText='Enter Customer Email' floatingLabelText='Enter Customer Email' />
+                    <div className="reg-input">
+                        <TextField value={Customer_email} fullWidth={true} onChange={(event) => this.setState({ Customer_email: event.target.value })} hintText='Enter Customer Email' floatingLabelText='Enter Customer Email' />
                     </div>
-                    <div style={{ width: '60%', marginLeft: 20 }}>
-                        <TextField value={Customer_cell} style={{ marginTop: -25 }} fullWidth={true} onChange={(event) => this.setState({ Customer_cell: event.target.value })} hintText='Contact No' floatingLabelText='Enter Customer Contact No' />
+                    <div className="reg-input">
+                        <TextField value={Customer_cell} fullWidth={true} onChange={(event) => this.setState({ Customer_cell: event.target.value })} hintText='Contact No' floatingLabelText='Enter Customer Contact No' />
                     </div>
-                    <div style={{ width: '60%', marginLeft: 20 }}>
-                        <TextField value={Customer_age} style={{ marginTop: -25 }} fullWidth={true} onChange={(event) => this.setState({ Customer_age: event.target.value })} hintText='Age' floatingLabelText='Age' />
-                    </div>
-                    <div style={{ width: '60%', marginLeft: 20 }}>
-                        <label>
-                            Booking Date:
-                                    <input style={{ width: 300 }} type="date" value={Booking_Date} onChange={(event) => this.setState({ Booking_Date: event.target.value })} />
-                        </label>
+                    {/* <div className="reg-input">
+                        <TextField value={Customer_age} fullWidth={true} onChange={(event) => this.setState({ Customer_age: event.target.value })} hintText='Age' floatingLabelText='Age' />
+                    </div> */}
+                    <div className="reg-input">
+                        <DatePicker
+                            floatingLabelText="Reservation Date"
+                            onChange={(e, date) => this.setState({ Booking_Date: date })}
+                            fullWidth={true}
+                        // autoOk={this.state.autoOk}
+                        // minDate={this.state.minDate}
+                        // maxDate={this.state.maxDate}
+                        // disableYearSelection={this.state.disableYearSelection}
+                        />
                     </div>
                     <RaisedButton label='Submit' fullWidth={false} primary={true} style={{ marginTop: 25, marginLeft: '40%' }} onClick={this.submitCustomer} />
                 </div>

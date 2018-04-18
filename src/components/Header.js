@@ -10,9 +10,10 @@ import Divider from 'material-ui/Divider';
 import { blue500 } from 'material-ui/styles/colors';
 import Person from 'material-ui/svg-icons/social/person';
 import Avatar from 'material-ui/Avatar';
-import { NavLink } from 'react-router-dom';
+import { NavLink, withRouter } from 'react-router-dom';
 import FlatButton from 'material-ui/FlatButton';
 import Logout from 'material-ui/svg-icons/action/power-settings-new';
+import { clearStorage } from '../lib/helpers';
 
 const logoutStyles = {
     marginTop: 265
@@ -23,7 +24,7 @@ const dividerStyle = {
 }
 
 
-export default class Header extends Component {
+class Header extends Component {
     constructor() {
         super();
         this.state = {
@@ -36,7 +37,13 @@ export default class Header extends Component {
         });
     }
     signOut() {
-        firebaseApp.auth().signOut();
+        firebaseApp.auth().signOut().then(result => {
+            this.setState({
+                drawerOpened: false,
+            });
+            clearStorage();
+            this.props.history.push('/');
+        })
     }
 
     render() {
@@ -64,5 +71,7 @@ export default class Header extends Component {
         )
     }
 }
+
+export default withRouter(Header);
 
 

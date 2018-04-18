@@ -6,6 +6,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 import { userRef } from '../firebase';
 import Error from '../components/Error';
+import { saveUId } from '../lib/helpers';
 
 
 // injectTapEventPlugin();
@@ -36,8 +37,11 @@ class SignUp extends Component {
                     phoneNumber: this.state.phoneNumber,
                 })
                     .then(result => {
+                        console.log("successfully data has been saved");
+                        saveUId(userInfo.uid);
                         this.props.history.push("/list");
                     }).catch(error => {
+                        console.log("an error occured after saving data", error);
                         this.setState({ error })
                     });
             })
@@ -73,7 +77,7 @@ class SignUp extends Component {
                         <div style={{ textAlign: 'center', marginTop: '5px' }}>
                             <Link to='/signin'> Already a user? Sign in instead</Link>
                         </div>
-                        <Error />
+                        <Error>{this.state.error.message}</Error>
                     </div>
                 </div>
             </MuiThemeProvider>

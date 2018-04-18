@@ -15,8 +15,11 @@ import { NavLink } from 'react-router-dom';
 import FlatButton from 'material-ui/FlatButton';
 import Logout from 'material-ui/svg-icons/action/power-settings-new';
 import NMG from './NMG';
+import { getUID } from '../lib/helpers';
 // import PB from './PB';
-import Majestic from './majestic';
+import Majestic from './Majestic';
+import { banquetRef } from '../firebase';
+import Loader from '../components/Loader';
 
 
 const logoutStyles = {
@@ -32,8 +35,33 @@ class list extends Component {
     constructor() {
         super();
         this.state = {
-            drawerOpened: false
+            drawerOpened: false,
+            banquets: null,
         }
+        this.getBanquets = this.getBanquets.bind(this);
+        this.cardClick = this.cardClick.bind(this);
+    }
+    componentDidMount() {
+        sessionStorage.removeItem('banquetDetails');
+        this.getBanquets()
+    }
+    cardClick(ban) {
+        sessionStorage.setItem("banquetDetails", JSON.stringify(ban));
+        const uid = getUID('userUID');
+        this.props.history.push('/baquetDetails/' + uid);
+    }
+    getBanquets() {
+        const _this = this;
+        banquetRef.on('value', function (snapshot) {
+            const banquets = snapshot.val();
+            const customBanArr = [];
+            for (var key in banquets) {
+                customBanArr.push(banquets[key]);
+            }
+            _this.setState({
+                banquets: customBanArr,
+            })
+        })
     }
     _toggleDrawer() {
         this.setState({
@@ -45,27 +73,20 @@ class list extends Component {
     }
 
     render() {
+        if (!this.state.banquets) return <Loader />
         return (
             <MuiThemeProvider>
                 <div>
-                    <Card style={{ marginTop: '10%' }}>
-                        <CardHeader title="North marriege Lawn" />
-                        <ListItem>
-                            <NavLink to="/booking">North Marrige Lawn</NavLink>
-                        </ListItem>
-                    </Card>
-                    <Card style={{ marginTop: '5%' }}>
-                        <CardHeader title="Pearl Banquet" />
-                        <ListItem>
-                            <NavLink to="/booking">Pearl Banquet</NavLink>
-                        </ListItem>
-                    </Card>
-                    <Card style={{ marginTop: '5%' }}>
-                        <CardHeader title="Pearl Banquet" />
-                        <ListItem>
-                            <NavLink to="/Majestic">Majestic Banquet</NavLink>
-                        </ListItem>
-                    </Card>
+                    {this.state.banquets.map((ban, i) => {
+                        return (
+                            <Card style={{ marginTop: '10%' }} onClick={() => this.cardClick(ban)}>
+                                <CardHeader title={ban.name} />
+                                <ListItem>
+                                    {ban.name}
+                                </ListItem>
+                            </Card>
+                        )
+                    })}
                 </div>
             </MuiThemeProvider>
         )

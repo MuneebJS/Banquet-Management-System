@@ -12,4 +12,6 @@ const config = {
 export const firebaseApp = firebase.initializeApp(config);
 export const customerInfo = firebase.database().ref('Customers');
 export const userRef = firebase.database().ref('Users');
+export const banquetRef = firebase.database().ref('Banquets');
+export const reservationRef = firebase.database().ref('ReservationRequests');
 // export const completeGoalRef = firebase.database().ref('completeGoals')
