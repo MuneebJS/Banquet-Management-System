@@ -3,10 +3,10 @@ import logo from './logo.svg';
 import registerServiceWorker from './registerServiceWorker';
 import './global.css';
 
-import app from './components/app.js';
-import SignUp from './components/SignUp.js';
-import SignIn from './components/SignIn.js';
-import list from './components/banquetList';
+import app from './containers/app.js';
+import SignUp from './containers/SignUp.js';
+import SignIn from './containers/SignIn.js';
+import list from './containers/banquetList';
 import { Router, Route } from 'react-router-dom';
 import createBrowserHistory from 'history/createBrowserHistory';
 import { Provider } from 'react-redux'
@@ -15,14 +15,14 @@ import { firebaseApp } from './firebase'
 import reducer from './reducers'
 import { logUser } from './actions'
 import Bootstrap from 'bootstrap/dist/css/bootstrap.css';
-import banquetList from './components/banquetList';
-import NMG from './components/NMG';
-// import PB from './components/PB';
-import Majestic from './components/majestic';
-import majestic from './components/majestic';
-import BanquetDetail from './components/BanquetDetail';
+import banquetList from './containers/banquetList';
+import NMG from './containers/NMG';
+// import PB from './containers/PB';
+import Majestic from './containers/majestic';
+import majestic from './containers/majestic';
+import BanquetDetail from './containers/BanquetDetail';
 import Header from './components/Header';
-import BookingForm from './components/BookingForm';
+import BookingForm from './containers/BookingForm';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 

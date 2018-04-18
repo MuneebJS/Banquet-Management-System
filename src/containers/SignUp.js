@@ -5,7 +5,9 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 import { userRef } from '../firebase';
-import Error from './Error';
+import Error from '../components/Error';
+
+
 // injectTapEventPlugin();
 class SignUp extends Component {
     constructor(props) {
@@ -51,7 +53,6 @@ class SignUp extends Component {
         return (
             <MuiThemeProvider>
                 <div>
-                    <AppBar title='Welcome to Banquet Booking App' style={{ marginLeft: '-12%', width: '123.5%' }} />
                     <h1 style={{ textAlign: 'center' }}>Banquet APP</h1>
                     <div className='form-block' style={{ margin: '5%' }}>
                         <div style={{ textAlign: 'center' }}>
