@@ -12,14 +12,15 @@ import { blue500 } from 'material-ui/styles/colors';
 import Person from 'material-ui/svg-icons/social/person';
 import Avatar from 'material-ui/Avatar';
 import { NavLink } from 'react-router-dom';
-import FlatButton from 'material-ui/FlatButton';
 import Logout from 'material-ui/svg-icons/action/power-settings-new';
 import NMG from './NMG';
 import { getUID } from '../lib/helpers';
 // import PB from './PB';
 import Majestic from './Majestic';
-import { banquetRef } from '../firebase';
+import { reservationRef } from '../firebase';
+import FlatButton from 'material-ui/FlatButton';
 import Loader from '../components/Loader';
+import * as firebase from 'firebase';
 
 
 const logoutStyles = {
@@ -31,21 +32,22 @@ const dividerStyle = {
 }
 
 
-class list extends Component {
+export default class ReservationRequests extends Component {
     constructor() {
         super();
         this.state = {
-            drawerOpened: false,
-            banquets: null,
+            requests: [],
+            isLoading: true,
+            error: false,
         }
         this.getBanquets = this.getBanquets.bind(this);
-        this.cardClick = this.cardClick.bind(this);
+        this.acceptHand = this.acceptHand.bind(this);
     }
     componentDidMount() {
-        sessionStorage.removeItem('banquetDetails');
         this.getBanquets()
     }
-    cardClick(ban) {
+
+    acceptHand(ban) {
         sessionStorage.setItem("banquetDetails", JSON.stringify(ban));
         const uid = ban.userUID;
         if (uid) {
@@ -53,40 +55,38 @@ class list extends Component {
         }
     }
     getBanquets() {
-        const _this = this;
-        banquetRef.on('value', function (snapshot) {
-            const banquets = snapshot.val();
+        // const _this = this;
+        // firebase.database().ref('ReservationRequests/' + banquetUID).on('value')
+        const banquetUID = getUID('userUID')
+        firebase.database().ref('ReservationRequests/' + banquetUID).on('value', (snapshot) => {
+            const requests = snapshot.val();
             const customBanArr = [];
-            for (var key in banquets) {
-                customBanArr.push(banquets[key]);
+            for (var key in requests) {
+                customBanArr.push(requests[key]);
             }
-            _this.setState({
-                banquets: customBanArr,
+            console.log("customBanArr", customBanArr)
+            this.setState({
+                requests: customBanArr,
+                isLoading: false,
             })
         })
-    }
-    _toggleDrawer() {
-        this.setState({
-            drawerOpened: !this.state.drawerOpened
-        });
-    }
-    signOut() {
-        firebaseApp.auth().signOut();
     }
 
     render() {
         // console.log("this.state", this.state)
-        if (!this.state.banquets) return <Loader />
+
+        if (this.state.isLoading) return <Loader />
         return (
             <MuiThemeProvider>
                 <div>
-                    {this.state.banquets.map((ban, i) => {
+                    {this.state.requests.map((item, i) => {
                         return (
-                            <Card style={{ marginTop: '10%' }} onClick={() => this.cardClick(ban)}>
-                                <CardHeader title={ban.name} />
+                            <Card style={{ marginTop: '10%' }}>
+                                <CardHeader title={item.customerName} />
                                 <ListItem>
-                                    {ban.name}
+                                    {item.customerEmail}
                                 </ListItem>
+                                <FlatButton label="Accept" primary={true} onClick={() => this.acceptHand(item)} />
                             </Card>
                         )
                     })}
@@ -96,8 +96,4 @@ class list extends Component {
     }
 }
 
-function mapStateToProps(state) {
-    return {}
-}
 
-export default connect(mapStateToProps, null)(list);

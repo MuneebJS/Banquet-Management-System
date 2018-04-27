@@ -38,6 +38,7 @@ class BanquetDetail extends Component {
             drawerOpened: false,
             details: {},
             isError: false,
+            isLoading: true,
         }
         this.reserveHand = this.reserveHand.bind(this);
         this.getBanquetDetail = this.getBanquetDetail.bind(this);
@@ -53,13 +54,15 @@ class BanquetDetail extends Component {
     getBanquetDetail() {
         const banquetUID = this.props.match.params.uid;
         firebase.database().ref('Banquets/' + banquetUID).once('value').then(snapshot => {
-            // console.log("result", snapshot);
+            console.log("result banquet details", snapshot);
             this.setState({
                 details: snapshot.val(),
+                isLoading: false
             })
         }).catch(error => {
             console.log("error occured", error)
             this.setState({
+                isLoading: false,
                 isError: true,
             })
         })
@@ -80,9 +83,10 @@ class BanquetDetail extends Component {
     }
 
     render() {
-        const { details } = this.state;
-        if (!details) return <Loader />
-        if (this.state.isError) return <Error>Something unexpected happened</Error>
+        const { details, isLoading, isError } = this.state;
+        console.log("this.state", this.state)
+        if (isLoading) return <Loader />
+        if (isError) return <Error>Something unexpected happened</Error>
         return (
             <MuiThemeProvider>
                 <div>

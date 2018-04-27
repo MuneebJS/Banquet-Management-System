@@ -64,10 +64,11 @@ class BookingForm extends Component {
             bookingDate: JSON.stringify(this.state.Booking_Date),
             uid: getUID('userUID')
         }).then(() => {
-            // console.log("successfull reserve")
+            console.log("successfull reserve")
             this.setState({
                 isError: false
-            })
+            });
+            this.props.history.push("/list");
         }).catch(err => {
             console.log("err", err)
             this.setState({
