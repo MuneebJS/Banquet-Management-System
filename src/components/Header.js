@@ -14,6 +14,10 @@ import { NavLink, withRouter } from 'react-router-dom';
 import FlatButton from 'material-ui/FlatButton';
 import Logout from 'material-ui/svg-icons/action/power-settings-new';
 import { clearStorage } from '../lib/helpers';
+import { checkAuth } from '../actions/index';
+import { getUID } from '../lib/helpers';
+import { Link } from 'react-router-dom';
+
 
 const logoutStyles = {
     marginTop: 265
@@ -45,8 +49,35 @@ class Header extends Component {
             this.props.history.push('/');
         })
     }
-
     render() {
+        if (!getUID('userUID')) {
+            return (<nav className="navbar navbar-default navbar-fixed-top custom-navbar">
+                <div className="container-fluid">
+                    <div className="navbar-header">
+                        <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                            <span className="sr-only">Toggle navigation</span>
+                            <span className="icon-bar"></span>
+                            <span className="icon-bar"></span>
+                            <span className="icon-bar"></span>
+                        </button>
+                        <Link to="/" className="navbar-brand custom-logo-heading">Business Portalall</Link>
+                    </div>
+                    <div id="navbar" className="navbar-collapse collapse">
+                        <ul className="nav navbar-nav mleftauto temp-css">
+                            <li key='allJobs' ><Link to='/allJobs' className='nav-link' >All Jobs</Link></li>
+                            <li key='allJobs' ><Link to='/allJobs' className='nav-link' >All Jobs</Link></li>
+                            <li key='allJobs' ><Link to='/allJobs' className='nav-link' >All Jobs</Link></li>
+                            <li key='allJobs' ><Link to='/allJobs' className='nav-link' >All Jobs</Link></li>
+                        </ul>
+                        <ul className="nav navbar-nav navbar-right">
+                            <li key='changePassword'><Link to='/setting/change-password' className='nav-link' >Change password</Link></li>
+                            <li><Link to='/company/signin' className='nav-link' >Company</Link></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            )
+        }
         return (
             <div className="container-fluid header-wrap">
                 <AppBar title='Majestic Banquet' onLeftIconButtonTouchTap={() => this._toggleDrawer()} />
@@ -72,6 +103,22 @@ class Header extends Component {
     }
 }
 
-export default withRouter(Header);
+function mapStateToProps(state) {
+    return {
+        isLoggedIn: state.user.isLoggedIn,
+        isAuthPending: state.user.isAuthPending,
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return ({
+        checkAuth: (role) => { dispatch(checkAuth(role)) }
+    })
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(withRouter(Header));
 
 

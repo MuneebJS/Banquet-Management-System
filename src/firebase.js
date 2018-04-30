@@ -9,9 +9,14 @@ const config = {
     messagingSenderId: "65159658490"
 };
 
+// var storage = firebase.storage();
+
 export const firebaseApp = firebase.initializeApp(config);
 export const customerInfo = firebase.database().ref('Customers');
 export const userRef = firebase.database().ref('Users');
 export const banquetRef = firebase.database().ref('Banquets');
 export const reservationRef = firebase.database().ref('ReservationRequests');
+export const acceptedRef = firebase.database().ref('AcceptedRequests');
+
+export const banquetImagesRef = firebase.storage().ref('banquetImages');
 // export const completeGoalRef = firebase.database().ref('completeGoals')

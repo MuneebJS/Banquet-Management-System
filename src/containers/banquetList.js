@@ -20,6 +20,7 @@ import { getUID } from '../lib/helpers';
 import Majestic from './Majestic';
 import { banquetRef } from '../firebase';
 import Loader from '../components/Loader';
+import ListingCard from '../components/ListingCard';
 
 
 const logoutStyles = {
@@ -76,18 +77,31 @@ class list extends Component {
 
     render() {
         // console.log("this.state", this.state)
-        if (!this.state.banquets) return <Loader />
+        const data = [
+            {
+                name: "dummy4",
+            },
+            {
+                name: "dummy3",
+            },
+            {
+                name: "dummy2",
+            },
+        ]
+        // if (!this.state.banquets) return <Loader />
         return (
             <MuiThemeProvider>
                 <div>
-                    {this.state.banquets.map((ban, i) => {
+                    {data.map((ban, i) => {
                         return (
-                            <Card style={{ marginTop: '10%' }} onClick={() => this.cardClick(ban)}>
-                                <CardHeader title={ban.name} />
-                                <ListItem>
-                                    {ban.name}
-                                </ListItem>
-                            </Card>
+                            // <Card style={{ marginTop: '10%' }} onClick={() => this.cardClick(ban)}>
+                            //     <CardHeader title={ban.name} />
+                            //     <ListItem>
+                            //         {ban.name}
+                            //     </ListItem>
+                            // </Card>
+                            // <ListingCard key={i} name={ban.name} />
+                            <div>ljasldfj</div>
                         )
                     })}
                 </div>

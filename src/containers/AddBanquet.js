@@ -5,11 +5,12 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import TimePicker from 'material-ui/TimePicker';
 import AppBar from 'material-ui/AppBar';
-import { banquetRef } from '../firebase';
+import { banquetRef, banquetImagesRef } from '../firebase';
 import Error from '../components/Error';
 import Title from '../components/Title';
 import { getUID } from '../lib/helpers';
-
+import FileBase64 from 'react-file-base64';
+import * as firebase from 'firebase';
 
 // injectTapEventPlugin();
 class AddBanquet extends Component {
@@ -24,11 +25,41 @@ class AddBanquet extends Component {
             phoneNumber: '',
             email: '',
             isLoading: '',
+            files: [],
             error: {
                 message: ''
             }
         }
         this.saveHandler = this.saveHandler.bind(this);
+        this.uploadImageAsPromise = this.uploadImageAsPromise.bind(this);
+        this.uplaodFiles = this.uplaodFiles.bind(this);
+    }
+    componentDidMount() {
+        //        // var gsReference = storage.refFromURL('gs://bucket/images/stars.jpg')
+        // const userUID = getUID('userUID');
+        // const nestedRef = banquetRef.child(userUID + '/');
+        // const storage = firebase.storage()
+        // const storageRef = storage.ref(`banquetImages/${userUID}`)
+
+
+        // storageRef.getDownloadURL().then(function (url) {
+        //     // `url` is the download URL for 'images/stars.jpg'
+
+        //     // This can be downloaded directly:
+        //     var xhr = new XMLHttpRequest();
+        //     xhr.responseType = 'blob';
+        //     xhr.onload = function (event) {
+        //         var blob = xhr.response;
+        //     };
+        //     xhr.open('GET', url);
+        //     xhr.send();
+        //     console.log("image urll", url)
+        //     // Or inserted into an <img> element:
+        //     // var img = document.getElementById('myimg');
+        //     // img.src = url;
+        // }).catch(function (error) {
+        //     // Handle any errors
+        // });
     }
     saveHandler() {
         const { name, description, location, timeTo, timeFrom, phoneNumber, email } = this.state;
@@ -45,15 +76,61 @@ class AddBanquet extends Component {
             timeTo: JSON.stringify(timeTo),
             timeFrom: JSON.stringify(timeFrom),
             userUID: userUID,
-        })
-            .then(result => {
-                this.props.history.push('/')
-            }).catch(error => {
-                this.setState({
-                    error
-                })
-                console.log("error occured in saving", error);
+        }).then(result => {
+            console.log("them from normal data")
+            this.uplaodFiles();
+            // this.props.history.push('/')
+        }).catch(error => {
+            this.setState({
+                error
             })
+            console.log("error occured in saving", error);
+        })
+    }
+
+    getFiles(files) {
+        this.setState({ files: files })
+    }
+
+    uplaodFiles() {
+        //Get files
+        const { files } = this.state;
+        console.log("upload files", files);
+
+        for (var i = 0; i < files.length; i++) {
+            console.log("from loop")
+            var imageFile = files[i].base64.split(',')[1];
+            this.uploadImageAsPromise(imageFile);
+        }
+    }
+
+    //Handle waiting to upload each file using promise
+    uploadImageAsPromise(imageFile) {
+        const _this = this;
+        return new Promise(function (resolve, reject) {
+            // var storageRef = firebase.storage().ref(fullDirectory + "/" + imageFile.name);
+            const banquetUID = getUID('userUID');
+            const nestedRef = banquetImagesRef.child(banquetImagesRef + '/');
+            //Upload file
+            var task = nestedRef.putString(imageFile, 'base64');
+            console.log("upload image very first before task on")
+            //Update progress bar
+            task.on('state_changed',
+                function progress(snapshot) {
+                    // var percentage = snapshot.bytesTransferred / snapshot.totalBytes * 100;
+                    // uploader.value = percentage;
+                    console.log("snapshot from progress", snapshot)
+                },
+                function error(err) {
+                    console.log("error during file upload", err)
+                },
+                function complete() {
+                    var downloadURL = task.snapshot.downloadURL;
+                    console.log("uplaod image complete", downloadURL);
+                    _this.props.history.push('/');
+                }
+            );
+        });
     }
 
 
@@ -82,6 +159,9 @@ class AddBanquet extends Component {
                                     value={this.state.timeFrom}
                                     onChange={(e, date) => this.setState({ timeFrom: date })}
                                 />
+                                <FileBase64
+                                    multiple={true}
+                                    onDone={this.getFiles.bind(this)} />
                             </div>
                             <div> <input className="form-control reg-input" type="text" placeholder='Phone Number' onChange={event => this.setState({ phoneNumber: event.target.value })} /></div>
                             <div><input className='form-control reg-input' type="email" placeholder='Email' onChange={event => this.setState({ email: event.target.value })} /></div>

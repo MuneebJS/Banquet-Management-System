@@ -60,7 +60,6 @@ class BookingForm extends Component {
             customerAddress: this.state.Customer_address,
             customerCell: this.state.Customer_cell,
             customerEmail: this.state.Customer_email,
-            // Customer_age: this.state.Customer_age,
             bookingDate: JSON.stringify(this.state.Booking_Date),
             uid: getUID('userUID')
         }).then(() => {

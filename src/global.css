@@ -29,3 +29,238 @@
 .laoder {
     text-align: center;
 }
+
+.custom-navbar
+{
+  background:#017dbf !important;
+      border-width: 0 0 0px !important;
+}
+.custom-logo-heading{
+    float: left;
+    height: auto !important;
+    padding: 5px 15px !important;
+    font-size: 30px !important;
+    color:#fff !important;
+}
+
+.custom-navbar .navbar-nav {
+    float: left;
+    margin: 0;
+    padding-left: 60px;
+    padding-top: 1px;
+}
+.custom-navbar ul li a
+{
+  color:#fff !important;
+  font-size:14.5px !important;
+  font-weight:400 !important;
+  padding-top: 17px !important;
+  padding-bottom: 17px !important;
+}
+.btn-green
+{
+  background:#369538 !important;
+}
+.btn-custom-btn
+{
+  font-size:21.63px !important;
+  color:#fff;
+  border:0 !important;
+}
+
+
+.pagin-btn {
+    padding: 0px 10px;
+    border: 0px solid
+}
+
+
+.job-card-notApp
+{
+    border: 1px solid #d7d2d2;
+    background: #fff;
+    margin: 15px auto !important;
+    width: 100%;
+    padding: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    position: relative;
+    float: left;
+    color: #0d0d0d;
+}
+.job-card-app
+{
+    border: 1px solid #017dbf;
+    background: #f9fcff;
+    margin: 15px auto !important;
+    width: 100%;
+    padding: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    position: relative;
+    float: left;
+    color: #0d0d0d;
+}
+.job-card-app h3, .job-card-notApp h3
+{
+    display: inline-block;
+    font-size: 24px;
+    color: #017dbf !important;
+    text-decoration: none;
+    margin:0 0 18px 0 !important;
+    padding: 0 !important;
+}
+.job-card-app p, .job-card-notApp p
+{
+    font-size: 15px;
+    color: #0d0d0d;
+    font-weight: 300;
+    text-decoration: none;
+    margin:0 !important;
+    padding: 0 !important;
+    line-height: 19px;
+}
+.job-listing-detail
+{
+    background:#fcfcfc;
+}
+.job-inside-detail
+{
+    padding: 1.8rem;
+}
+.job-inside-detail p
+{
+    text-align: left !important;
+    font-size: 15px !important;
+}
+
+.optional-details
+{
+    background: #fff;
+    float: left;
+    width:100%;
+    padding: 9px 0;
+    border-top:1px solid #d9d9d9;
+    padding-left: 1.8rem;
+}
+.optional-detail-icon
+{
+    float:left;
+}
+.date-icon
+{
+    
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    float: left;
+    margin-right: 10px;
+}
+.optional-detail-text
+{
+    display: inline-block;
+    float: left;
+    padding-top: 2px;
+}
+
+.job-card-notApp:hover, .job-card-app:hover
+{
+    text-decoration: none !important;
+}
+.job-card-app:hover
+{
+    cursor: default;
+}
+.job-card-app
+{
+    border:2px solid #017dbf;
+    box-shadow:1px 2px 3px #ccc;
+}
+.job-card-notApp:hover
+{
+    border:1px solid #017dbf;
+    box-shadow:1px 2px 3px #ccc;
+}
+.job-card-notApp:hover .job-listing-detail
+{
+    background:#f9fcff; 
+}
+.job-card-notApp:hover .optional-details
+{
+    border-top:1px solid #017dbf;
+}
+
+.job-card-app .job-listing-detail
+{
+    background:#f9fcff; 
+}
+.job-card-app .optional-details
+{
+    border-top:1px solid #017dbf;
+}
+.job-card-app button
+{
+    cursor: default;
+}
+.jobcard-right
+{
+    float: left;
+    max-width:500px;
+}
+.jobcard-right h3
+{
+    margin-bottom:0 !important;
+}
+.new-joblisting
+{
+    padding: 1.8rem;
+    float: left;
+    width: 100%;
+}
+@media (min-width:180px) and (max-width:320px)
+{
+.jobcard-right {
+    float: left;
+    width: 100%;
+    margin-top:15px;
+}
+}
+@media (min-width:180px) and (max-width:480px)
+{
+.jobcard-right {
+    float: left;
+    max-width: 500px;
+    min-width: 40%;
+}
+.clogo-left {
+    width: 100px;
+    margin-right: 10px;
+}
+.clogo-left img {
+    max-width: 90px;
+    max-height: 70px;
+}
+.mob-job-card-apply-btn
+{
+    float:left !important;
+}
+.new-joblisting {
+    padding: 1rem;
+    float: left;
+    width: 100%;
+}
+.job-card-app h3, .job-card-notApp h3 {
+    font-size: 18px;
+}
+.job-card-app h5, .job-card-notApp h5
+{
+    font-size: 13px;
+    margin-bottom: 7px;
+    margin-top: 2px;
+}
+.applied-btn {
+    float: left;
+}
+}

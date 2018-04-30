@@ -15,12 +15,12 @@ import { NavLink } from 'react-router-dom';
 import Logout from 'material-ui/svg-icons/action/power-settings-new';
 import NMG from './NMG';
 import { getUID } from '../lib/helpers';
-// import PB from './PB';
 import Majestic from './Majestic';
-import { reservationRef } from '../firebase';
+import { acceptedRef, reservationRef } from '../firebase';
 import FlatButton from 'material-ui/FlatButton';
 import Loader from '../components/Loader';
 import * as firebase from 'firebase';
+
 
 
 const logoutStyles = {
@@ -39,6 +39,7 @@ export default class ReservationRequests extends Component {
             requests: [],
             isLoading: true,
             error: false,
+            isAccepting: false
         }
         this.getBanquets = this.getBanquets.bind(this);
         this.acceptHand = this.acceptHand.bind(this);
@@ -48,11 +49,27 @@ export default class ReservationRequests extends Component {
     }
 
     acceptHand(ban) {
-        sessionStorage.setItem("banquetDetails", JSON.stringify(ban));
-        const uid = ban.userUID;
-        if (uid) {
-            this.props.history.push('/baquetDetails/' + uid);
-        }
+        this.setState({
+            isAccepting: true,
+        })
+        const banquetUID = getUID('userUID');
+        // console.log("ban after accept click", ban)
+        const nestedRef = acceptedRef.child(banquetUID + '/');
+        nestedRef.push(ban).then(() => {
+            console.log("successfull accepted")
+            const resNestedRef = reservationRef.child(`${banquetUID}/${ban.key}`)
+            resNestedRef.remove().then(() => {
+                this.setState({
+                    isError: false,
+                    isAccepting: false,
+                });
+            }).catch(err => {
+                console.log("err", err)
+                this.setState({
+                    isError: true
+                })
+            })
+        })
     }
     getBanquets() {
         // const _this = this;
@@ -61,10 +78,13 @@ export default class ReservationRequests extends Component {
         firebase.database().ref('ReservationRequests/' + banquetUID).on('value', (snapshot) => {
             const requests = snapshot.val();
             const customBanArr = [];
-            for (var key in requests) {
-                customBanArr.push(requests[key]);
+            for (var prop in requests) {
+                // skip loop if the property is from prototype
+                if (!requests.hasOwnProperty(prop)) continue;
+                let reqData = requests[prop];
+                reqData.key = prop;
+                customBanArr.push(reqData)
             }
-            console.log("customBanArr", customBanArr)
             this.setState({
                 requests: customBanArr,
                 isLoading: false,
@@ -74,7 +94,7 @@ export default class ReservationRequests extends Component {
 
     render() {
         // console.log("this.state", this.state)
-
+        const { isAccepting } = this.state;
         if (this.state.isLoading) return <Loader />
         return (
             <MuiThemeProvider>
@@ -86,7 +106,8 @@ export default class ReservationRequests extends Component {
                                 <ListItem>
                                     {item.customerEmail}
                                 </ListItem>
-                                <FlatButton label="Accept" primary={true} onClick={() => this.acceptHand(item)} />
+                                <FlatButton label={isAccepting ? 'Accepting' : 'Accept'}
+                                    primary={true} onClick={() => this.acceptHand(item)} />
                             </Card>
                         )
                     })}

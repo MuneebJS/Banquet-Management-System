@@ -10,7 +10,7 @@ import SignIn from './containers/SignIn.js';
 import { Router, Route } from 'react-router-dom';
 import createBrowserHistory from 'history/createBrowserHistory';
 import { Provider } from 'react-redux'
-import { createStore } from 'redux'
+import { createStore, applyMiddleware } from 'redux'
 import { Switch } from 'react-router-dom'
 import { firebaseApp } from './firebase'
 import reducer from './reducers'
@@ -21,6 +21,7 @@ import NMG from './containers/NMG';
 import AddBanquet from './containers/AddBanquet';
 import AdminDashboard from './containers/AdminDashboard';
 import PrivateRoute from './PrivateRoute';
+import thunk from 'redux-thunk'
 
 import Majestic from './containers/Majestic';
 import BanquetDetail from './containers/BanquetDetail';
@@ -31,7 +32,7 @@ import Home from './components/Home';
 
 
 const history = createBrowserHistory();
-const store = createStore(reducer);
+const store = createStore(reducer, applyMiddleware(thunk));
 
 class App extends Component {
   render() {
@@ -41,8 +42,9 @@ class App extends Component {
           <div >
             <Router history={history}>
               <Header>
-                <Switch>    
-                  <Route path="/home" component={Home} />
+                <Switch>
+                  <Route path="/" component={Home} />
+                  {/* <PrivateRoute exact path="/" role="admin"><Home /></PrivateRoute> */}
                   <Route path="/app" component={app} />
                   <Route path="/signin" component={SignIn} />
                   <Route path="/signup/:role" component={SignUp} />
