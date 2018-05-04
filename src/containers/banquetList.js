@@ -88,20 +88,19 @@ class list extends Component {
                 name: "dummy2",
             },
         ]
-        // if (!this.state.banquets) return <Loader />
+        if (!this.state.banquets) return <Loader />
         return (
             <MuiThemeProvider>
                 <div>
-                    {data.map((ban, i) => {
+                    {this.state.banquets.map((ban, i) => {
                         return (
-                            // <Card style={{ marginTop: '10%' }} onClick={() => this.cardClick(ban)}>
-                            //     <CardHeader title={ban.name} />
-                            //     <ListItem>
-                            //         {ban.name}
-                            //     </ListItem>
-                            // </Card>
+                            <Card style={{ marginTop: '10%' }} onClick={() => this.cardClick(ban)}>
+                                <CardHeader title={ban.name} />
+                                <ListItem>
+                                    {ban.name}
+                                </ListItem>
+                            </Card>
                             // <ListingCard key={i} name={ban.name} />
-                            <div>ljasldfj</div>
                         )
                     })}
                 </div>

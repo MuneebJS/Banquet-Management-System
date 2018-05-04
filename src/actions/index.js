@@ -1,4 +1,4 @@
-import { SIGNED_IN, AUTH_PENDING, SET_GOALS, SET_COMPLETED, CHECK_AUTH_FAILED, CHECK_AUTH_SUCCESS } from '../constants';
+import { SIGNED_IN, AUTH_PENDING, SET_GOALS, SET_COMPLETED, CHECK_AUTH_FAILED, CHECK_AUTH_SUCCESS, LOGOUT } from '../constants';
 import * as firebase from 'firebase';
 import { userRef } from '../firebase';
 
@@ -31,15 +31,22 @@ export function setCompleted(completeGoals) {
 
 
 
-function checkAuthSuccess() {
+export function checkAuthSuccess(payload) {
     return {
         type: CHECK_AUTH_SUCCESS,
+        payload,
     };
 }
 function checkAuthFailed() {
     return {
         type: CHECK_AUTH_FAILED,
     };
+}
+
+export function logout() {
+    return {
+        type: LOGOUT,
+    }
 }
 
 export function checkAuth({ role }) {
@@ -51,15 +58,15 @@ export function checkAuth({ role }) {
                 const nestedRef = userRef.child(`${user.uid}`)
                 nestedRef.once('value')
                     .then((userDetails) => {
+                        // if (role) {
                         if (userDetails.val().role === role) {
-                            console.log("true if");
                             dispatch(checkAuthSuccess());
                         } else {
                             dispatch(checkAuthFailed());
                         }
+                        // }
                     });
             } else {
-                console.log("else last one")
                 dispatch(checkAuthFailed());
             }
         })

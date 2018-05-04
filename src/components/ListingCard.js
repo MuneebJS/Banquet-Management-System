@@ -22,7 +22,7 @@ export default class ListingCard extends Component {
             <h5><strong>{name}</strong></h5>
           </div>
 
-          <button className='btn btn-primary' type='button' onClick={this.props.onClick}>Sign Up</button>          {/* <p dangerouslySetInnerHTML={this.createMarkup(des)} />
+          <button className='btn btn-primary' type='button' onClick={this.props.onClick}>Reserve</button>          {/* <p dangerouslySetInnerHTML={this.createMarkup(des)} />
           <p dangerouslySetInnerHTML={this.createMarkup(req)} /> */}
         </div>
         <div className="optional-details">

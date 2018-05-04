@@ -17,7 +17,7 @@ import { clearStorage } from '../lib/helpers';
 import { checkAuth } from '../actions/index';
 import { getUID } from '../lib/helpers';
 import { Link } from 'react-router-dom';
-
+import { logout } from '../actions/index';
 
 const logoutStyles = {
     marginTop: 265
@@ -35,6 +35,12 @@ class Header extends Component {
             drawerOpened: false
         }
     }
+    componentDidMount() {
+        // console.log("this.props", this.props)
+        // const { user, checkAuth } = this.props;
+        // if (!user) this.props.checkAuth();
+        console.log("thisprop from header in cmd", this.props)
+    }
     _toggleDrawer() {
         this.setState({
             drawerOpened: !this.state.drawerOpened
@@ -46,36 +52,69 @@ class Header extends Component {
                 drawerOpened: false,
             });
             clearStorage();
-            this.props.history.push('/');
+            console.log('this.props before logout', this.props);
+
+            this.props.logout();
+
+            console.log('this.props after logout', this.props);
+            // this.props.history.push('/');
         })
     }
     render() {
-        if (!getUID('userUID')) {
-            return (<nav className="navbar navbar-default navbar-fixed-top custom-navbar">
-                <div className="container-fluid">
-                    <div className="navbar-header">
-                        <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                            <span className="sr-only">Toggle navigation</span>
-                            <span className="icon-bar"></span>
-                            <span className="icon-bar"></span>
-                            <span className="icon-bar"></span>
-                        </button>
-                        <Link to="/" className="navbar-brand custom-logo-heading">Business Portalall</Link>
+        if (!this.props.userInfo) {
+            return (
+                <div>
+                    <div id="flipkart-navbar">
+                        <div className="container">
+                            <div className="row row1">
+                                <ul className="largenav pull-right">
+                                    <li className="upper-links"><a className="links" href="http://clashhacks.in/">About Us</a></li>
+                                    <li className="upper-links"><a className="links" href="https://campusbox.org/">Contact Us</a></li>
+                                    <li className="upper-links"><a className="links" href="http://clashhacks.in/">Home</a></li>
+                                    <li className="upper-links"><a className="links" href="http://clashhacks.in/">Banquets</a></li>
+                                    
+                                    <li className="upper-links dropdown"><a className="links" href="http://clashhacks.in/">Register</a>
+                                        <ul className="dropdown-menu">
+                                            <li className="profile-li"><a className="profile-links" href="http://clashhacks.in/">Signin</a></li>
+                                            <li className="profile-li"><a className="profile-links" href="http://yazilife.com/">Banquet</a></li>
+                                            <li className="profile-li"><a className="profile-links" href="http://hacksociety.tech/">User</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div className="row row2">
+                                <div className="col-sm-2">
+                                    <h2><span className="smallnav menu" onclick="openNav()">☰ Brand</span></h2>
+                                    <h1><span className="largenav">Business Portan</span></h1>
+                                </div>
+                                <div className="flipkart-navbar-search smallsearch col-sm-8 col-xs-11">
+                                    <div className="row">
+                                        <input className="flipkart-navbar-input col-xs-11" type="" placeholder="Search for Banquets" name="" />
+                                        <button className="flipkart-navbar-button col-xs-1">
+                                            <svg width="15px" height="15px">
+                                                <path d="M11.618 9.897l4.224 4.212c.092.09.1.23.02.312l-1.464 1.46c-.08.08-.222.072-.314-.02L9.868 11.66M6.486 10.9c-2.42 0-4.38-1.955-4.38-4.367 0-2.413 1.96-4.37 4.38-4.37s4.38 1.957 4.38 4.37c0 2.412-1.96 4.368-4.38 4.368m0-10.834C2.904.066 0 2.96 0 6.533 0 10.105 2.904 13 6.486 13s6.487-2.895 6.487-6.467c0-3.572-2.905-6.467-6.487-6.467 "></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div id="navbar" className="navbar-collapse collapse">
-                        <ul className="nav navbar-nav mleftauto temp-css">
-                            <li key='allJobs' ><Link to='/allJobs' className='nav-link' >All Jobs</Link></li>
-                            <li key='allJobs' ><Link to='/allJobs' className='nav-link' >All Jobs</Link></li>
-                            <li key='allJobs' ><Link to='/allJobs' className='nav-link' >All Jobs</Link></li>
-                            <li key='allJobs' ><Link to='/allJobs' className='nav-link' >All Jobs</Link></li>
-                        </ul>
-                        <ul className="nav navbar-nav navbar-right">
-                            <li key='changePassword'><Link to='/setting/change-password' className='nav-link' >Change password</Link></li>
-                            <li><Link to='/company/signin' className='nav-link' >Company</Link></li>
-                        </ul>
+                    <div id="mySidenav" className="sidenav">
+                        <div className="container" style={{ backgroundColor: '#2874f0', paddingTop: 10 }}>
+                            <span className="sidenav-heading">Home</span>
+                            <a href="javascript:void(0)" className="closebtn" onclick="closeNav()">×</a>
+                        </div>
+                        <a href="http://clashhacks.in/">Link</a>
+                        <a href="http://clashhacks.in/">Link</a>
+                        <a href="http://clashhacks.in/">Link</a>
+                        <a href="http://clashhacks.in/">Link</a>
+                    </div>
+                    <div className="innerWrap container">
+                        {this.props.children}
                     </div>
                 </div>
-            </nav>
+
             )
         }
         return (
@@ -105,14 +144,13 @@ class Header extends Component {
 
 function mapStateToProps(state) {
     return {
-        isLoggedIn: state.user.isLoggedIn,
-        isAuthPending: state.user.isAuthPending,
+        userInfo: state.user.userInfo,
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return ({
-        checkAuth: (role) => { dispatch(checkAuth(role)) }
+        logout: (role) => { dispatch(logout(role)) }
     })
 }
 

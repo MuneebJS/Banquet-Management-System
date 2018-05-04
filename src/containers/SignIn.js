@@ -9,6 +9,8 @@ import * as firebase from 'firebase';
 import Title from '../components/Title';
 import { saveUId } from '../lib/helpers';
 import Error from '../components/Error';
+import { checkAuthSuccess } from '../actions/index';
+import { connect } from 'react-redux';
 
 injectTapEventPlugin();
 
@@ -37,6 +39,8 @@ class SignIn extends Component {
                 console.log("user ifo signin", userInfo.uid);
                 firebase.database().ref('Users/' + userInfo.uid).once('value')
                     .then(function (snapshot) {
+                        console.log("snapshot val from signin", snapshot.val())
+                        _this.props.setUser(snapshot.val());
                         saveUId(userInfo.uid);
                         _this.props.history.push("/list");
                     }).catch(error => {
@@ -75,4 +79,22 @@ class SignIn extends Component {
     }
 }
 
-export default withRouter(SignIn);
+
+// function mapStateToProps(state) {
+//     return {
+//         isLoggedIn: state.user.isLoggedIn,
+//         isAuthPending: state.user.isAuthPending,
+//         //   common: state.common
+//     };
+// }
+
+function mapDispatchToProps(dispatch) {
+    return ({
+        setUser: (payload) => { dispatch(checkAuthSuccess(payload)) }
+    })
+}
+
+export default connect(
+    null,
+    mapDispatchToProps
+)(SignIn);

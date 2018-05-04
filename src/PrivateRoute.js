@@ -9,17 +9,28 @@ import { checkAuth } from './actions/index';
 
 
 class PrivateRoute extends React.Component {
+    constructor() {
+        super();
+        this.checkAuth = this.checkAuth.bind(this);
+    }
     componentDidMount() {
         const role = this.props.role;
-        this.props.checkAuth({ role });
+        // this.props.checkAuth({ role });
+    }
+    checkAuth() {
+        const { role, userInfo } = this.props;
+        if (!userInfo) return false;
+        if (role !== userInfo.role) return false;
+        return true;
+        // console.log(this.props);
     }
     render() {
-        console.log("this.props from private route", this.props);
-        if (this.props.isAuthPending) return <h2>...Loading</h2>;
-        console.log("came after ifffffffff")
+        console.log("checkAuth from private route", this.checkAuth());
+        // if (this.props.isAuthPending) return <h2>...Loading</h2>;
+        // console.log("came after ifffffffff")
         return (
             <Route {...this.props.routeProps} render={() => (
-                this.props.isLoggedIn ? (
+                this.checkAuth() ? (
                     <div>{this.props.children}</div>
                 ) : (
                         <Redirect to={{
@@ -33,8 +44,7 @@ class PrivateRoute extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        isLoggedIn: state.user.isLoggedIn,
-        isAuthPending: state.user.isAuthPending,
+        userInfo: state.user.userInfo,
         //   common: state.common
     };
 }
