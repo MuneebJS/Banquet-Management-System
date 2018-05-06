@@ -32,6 +32,7 @@ export function setCompleted(completeGoals) {
 
 
 export function checkAuthSuccess(payload) {
+    console.log("pyload from checkauth usccess", payload);
     return {
         type: CHECK_AUTH_SUCCESS,
         payload,

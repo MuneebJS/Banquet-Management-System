@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import { firebaseApp } from '../firebase';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -94,8 +94,8 @@ function mapDispatchToProps(dispatch) {
     })
 }
 
-export default connect(
+export default withRouter(connect(
     null,
-    mapDispatchToProps
-)(SignUp);
+    mapDispatchToProps,
+)(SignUp));
 

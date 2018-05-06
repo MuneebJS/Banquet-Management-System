@@ -40,9 +40,21 @@ class SignIn extends Component {
                 firebase.database().ref('Users/' + userInfo.uid).once('value')
                     .then(function (snapshot) {
                         console.log("snapshot val from signin", snapshot.val())
-                        _this.props.setUser(snapshot.val());
+
                         saveUId(userInfo.uid);
-                        _this.props.history.push("/list");
+                        if (snapshot.val().role === 'admin') {
+                            firebase.database().ref('Banquets/' + userInfo.uid).once('value')
+                                .then(function (banquetData) {
+                                    let data = snapshot.val();
+                                    data.banquetInof = banquetData.val();
+                                    _this.props.setUser(data);
+                                    _this.props.history.push("/list");
+                                })
+                        } else {
+                            _this.props.setUser(snapshot.val());
+                            _this.props.history.push("/list");
+                        }
+
                     }).catch(error => {
                         this.setState({ error, isLoading: false })
                     })
@@ -70,7 +82,7 @@ class SignIn extends Component {
                             </button>
                         </div>
                         <div style={{ textAlign: 'center', marginTop: '5px' }}>
-                            <Link to='/signup'> Not registered ? Sign up instead</Link>
+                            <Link to='/signup/admin'> Not registered ? Sign up instead</Link>
                         </div>
                     </div>
                 </div>
@@ -96,5 +108,5 @@ function mapDispatchToProps(dispatch) {
 
 export default connect(
     null,
-    mapDispatchToProps
-)(SignIn);
+    mapDispatchToProps,
+)(withRouter(SignIn));

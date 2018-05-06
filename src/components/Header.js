@@ -34,13 +34,10 @@ class Header extends Component {
         this.state = {
             drawerOpened: false
         }
+        this.renderLinks = this.renderLinks.bind(this);
+        this.renderContent = this.renderContent.bind(this);
     }
-    componentDidMount() {
-        // console.log("this.props", this.props)
-        // const { user, checkAuth } = this.props;
-        // if (!user) this.props.checkAuth();
-        console.log("thisprop from header in cmd", this.props)
-    }
+
     _toggleDrawer() {
         this.setState({
             drawerOpened: !this.state.drawerOpened
@@ -53,34 +50,98 @@ class Header extends Component {
             });
             clearStorage();
             console.log('this.props before logout', this.props);
-
             this.props.logout();
-
-            console.log('this.props after logout', this.props);
-            // this.props.history.push('/');
+            this.props.history.push('/');
         })
     }
-    render() {
-        if (!this.props.userInfo) {
+
+    renderLinks() {
+        const { userInfo } = this.props;
+        if (userInfo) {
+            if (userInfo.role === 'admin') {
+                return (
+                    <div>
+                        <ListItem leftAvatar={<Avatar>{this.props.userInfo ? this.props.userInfo.firstName[0] : ''}</Avatar>}>
+                            <NavLink to="/dashboard/:user">Dashboard</NavLink>
+                        </ListItem>
+                        <ListItem>
+                            <NavLink to="/list">List of Banquets</NavLink>
+                        </ListItem>
+                        <ListItem>
+                            <NavLink to="/contactUs">Contact Us</NavLink>
+                        </ListItem>
+                        <ListItem>
+                            <NavLink to="/aboutUs">About Us</NavLink>
+                        </ListItem>
+                    </div>
+                )
+            } else if (userInfo.role === 'user') {
+                console.log("user ******")
+                return (
+                    <div>
+                        <ListItem leftAvatar={<Avatar>{this.props.userInfo.firstName[0]}</Avatar>}>
+                            <NavLink to="/dashboard/:user">Dashboard</NavLink>
+                        </ListItem>
+                        <ListItem>
+                            <NavLink to="/list">List of Banquets</NavLink>
+                        </ListItem>
+                        <ListItem>
+                            <NavLink to="/contactUs">Contact Us</NavLink>
+                        </ListItem>
+                        <ListItem>
+                            <NavLink to="/aboutUs">About Us</NavLink>
+                        </ListItem></div>)
+
+            } else {
+                return null;
+            }
+        }
+        return null;
+    }
+    renderContent() {
+        const { userInfo } = this.props;
+        if (userInfo) {
+            return (
+                <div className="container-fluid header-wrap">
+                    <AppBar title='Majestic Banquet' onLeftIconButtonTouchTap={() => this._toggleDrawer()} />
+                    <Drawer open={this.state.drawerOpened} docked={false} onRequestChange={() => this._toggleDrawer()}>
+                        <List>
+                            <Card>
+                                <CardHeader
+                                    title={`${this.props.userInfo.firstName} ${this.props.userInfo.lastName}`}
+                                    subtitle={this.props.userInfo.email} />
+                            </Card>
+                            <Divider style={dividerStyle} />
+                            {this.renderLinks()}
+                            <FlatButton style={logoutStyles} icon={<Logout />} label="Signout" fullWidth={true} onTouchTap={() => this.signOut()} />
+                        </List>
+                    </Drawer>
+                    <div className="innerWrap container">
+                        {this.props.children}
+                    </div>
+                </div>
+            );
+        } else {
             return (
                 <div>
                     <div id="flipkart-navbar">
                         <div className="container">
                             <div className="row row1">
-                                <ul className="largenav pull-right">
-                                    <li className="upper-links"><a className="links" href="http://clashhacks.in/">About Us</a></li>
-                                    <li className="upper-links"><a className="links" href="https://campusbox.org/">Contact Us</a></li>
-                                    <li className="upper-links"><a className="links" href="http://clashhacks.in/">Home</a></li>
-                                    <li className="upper-links"><a className="links" href="http://clashhacks.in/">Banquets</a></li>
-                                    
-                                    <li className="upper-links dropdown"><a className="links" href="http://clashhacks.in/">Register</a>
-                                        <ul className="dropdown-menu">
-                                            <li className="profile-li"><a className="profile-links" href="http://clashhacks.in/">Signin</a></li>
-                                            <li className="profile-li"><a className="profile-links" href="http://yazilife.com/">Banquet</a></li>
-                                            <li className="profile-li"><a className="profile-links" href="http://hacksociety.tech/">User</a></li>
-                                        </ul>
-                                    </li>
+                                <ul className="largenav">
+                                    <ul className="largenav" style={{ display: 'inline' }}>
+                                        <li className="upper-links">
+                                            <NavLink to="/aboutUs" className="links">About Us</NavLink></li>
+                                        <li className="upper-links"><NavLink to="/aboutUs" className="links">Contact Us</NavLink> </li>
+                                        <li className="upper-links"><NavLink to="/" className="links">Home</NavLink></li>
+                                        <li className="upper-links"><NavLink to="/aboutUs" className="links">Banquets</NavLink ></li>
+                                    </ul>
+
+                                    <ul className="largenav pull-right">
+                                        <li className="upper-links"><NavLink to="/aboutUs" className="links">Register</NavLink ></li>
+                                        <li className="upper-links"><NavLink to="/aboutUs" className="links">Login</NavLink ></li>
+                                    </ul>
                                 </ul>
+
                             </div>
                             <div className="row row2">
                                 <div className="col-sm-2">
@@ -99,7 +160,7 @@ class Header extends Component {
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div >
                     <div id="mySidenav" className="sidenav">
                         <div className="container" style={{ backgroundColor: '#2874f0', paddingTop: 10 }}>
                             <span className="sidenav-heading">Home</span>
@@ -113,32 +174,14 @@ class Header extends Component {
                     <div className="innerWrap container">
                         {this.props.children}
                     </div>
-                </div>
-
+                </div >
             )
         }
-        return (
-            <div className="container-fluid header-wrap">
-                <AppBar title='Majestic Banquet' onLeftIconButtonTouchTap={() => this._toggleDrawer()} />
-                <Drawer open={this.state.drawerOpened} docked={false} onRequestChange={() => this._toggleDrawer()}>
-                    <List>
-                        <Card>
-                            <CardHeader title="User" subtitle="User@gmail.com" />
-                        </Card>
-                        <br />
-                        <Divider style={dividerStyle} />
-                        <ListItem leftAvatar={<Avatar icon={<Person />} backgroundColor={blue500} />}>
-                            <NavLink to="/list">List of Banquets</NavLink>
-                        </ListItem>
-                        <br />
-                        <FlatButton style={logoutStyles} icon={<Logout />} label="Signout" fullWidth={true} onTouchTap={() => this.signOut()} />
-                    </List>
-                </Drawer>
-                <div className="innerWrap container">
-                    {this.props.children}
-                </div>
-            </div>
-        )
+    }
+    render() {
+        const { userInfo } = this.props;
+        console.log("userinf from header", userInfo);
+        return this.renderContent();
     }
 }
 

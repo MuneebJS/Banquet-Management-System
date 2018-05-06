@@ -11,6 +11,7 @@ import Title from '../components/Title';
 import { getUID } from '../lib/helpers';
 import FileBase64 from 'react-file-base64';
 import * as firebase from 'firebase';
+import lodash from 'lodash';
 
 // injectTapEventPlugin();
 class AddBanquet extends Component {
@@ -62,12 +63,21 @@ class AddBanquet extends Component {
         // });
     }
     saveHandler() {
-        const { name, description, location, timeTo, timeFrom, phoneNumber, email } = this.state;
+        const { name, description, location, timeTo, timeFrom, phoneNumber, email, files } = this.state;
         this.setState({
             isLoading: true,
         })
         const userUID = getUID('userUID');
         const nestedRef = banquetRef.child(userUID + '/');
+        let imageFiles = [];
+        if (files) {
+            // imageFiles = files;
+            lodash.forEach(files, (val) => {
+                imageFiles.push({
+                    image: val.base64,
+                })
+            })
+        }
         nestedRef.set({
             name: name,
             description: description,
@@ -76,10 +86,9 @@ class AddBanquet extends Component {
             timeTo: JSON.stringify(timeTo),
             timeFrom: JSON.stringify(timeFrom),
             userUID: userUID,
+            images: imageFiles
         }).then(result => {
-            console.log("them from normal data")
-            this.uplaodFiles();
-            // this.props.history.push('/')
+            this.props.history.push('/list')
         }).catch(error => {
             this.setState({
                 error
@@ -95,24 +104,32 @@ class AddBanquet extends Component {
     uplaodFiles() {
         //Get files
         const { files } = this.state;
-        console.log("upload files", files);
-
-        for (var i = 0; i < files.length; i++) {
-            console.log("from loop")
-            var imageFile = files[i].base64.split(',')[1];
-            this.uploadImageAsPromise(imageFile);
-        }
+        // console.log("upload files", files);
+        const userUID = getUID('userUID');
+        const imageFiles = files[0].base64.split(',')[1];
+        const imagesRef = firebase.database().ref('BanquetImage');
+        const nestedRef = imagesRef.child(userUID + '/');
+        nestedRef.set({
+            imageBlob: imageFiles,
+        }).then(() => {
+            this.props.history.push('/')
+        }).catch((err) => console.log("error in uploading file", err))
+        // for (var i = 0; i < files.length; i++) {
+        //     console.log("from loop")
+        //     var imageFiles = files[i].base64.split(',')[1];
+        //     this.uploadImageAsPromise(imageFiles);
+        // }
     }
 
     //Handle waiting to upload each file using promise
-    uploadImageAsPromise(imageFile) {
+    uploadImageAsPromise(imageFiles) {
         const _this = this;
         return new Promise(function (resolve, reject) {
-            // var storageRef = firebase.storage().ref(fullDirectory + "/" + imageFile.name);
+            // var storageRef = firebase.storage().ref(fullDirectory + "/" + imageFiles.name);
             const banquetUID = getUID('userUID');
             const nestedRef = banquetImagesRef.child(banquetImagesRef + '/');
             //Upload file
-            var task = nestedRef.putString(imageFile, 'base64');
+            var task = nestedRef.putString(imageFiles, 'base64');
             console.log("upload image very first before task on")
             //Update progress bar
             task.on('state_changed',

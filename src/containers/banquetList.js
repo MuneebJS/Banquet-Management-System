@@ -21,6 +21,8 @@ import Majestic from './Majestic';
 import { banquetRef } from '../firebase';
 import Loader from '../components/Loader';
 import ListingCard from '../components/ListingCard';
+import { CardActions, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+
 
 
 const logoutStyles = {
@@ -57,6 +59,7 @@ class list extends Component {
         const _this = this;
         banquetRef.on('value', function (snapshot) {
             const banquets = snapshot.val();
+            console.log("snapshot.val()", snapshot.val())
             const customBanArr = [];
             for (var key in banquets) {
                 customBanArr.push(banquets[key]);
@@ -76,35 +79,41 @@ class list extends Component {
     }
 
     render() {
-        // console.log("this.state", this.state)
-        const data = [
-            {
-                name: "dummy4",
-            },
-            {
-                name: "dummy3",
-            },
-            {
-                name: "dummy2",
-            },
-        ]
         if (!this.state.banquets) return <Loader />
         return (
             <MuiThemeProvider>
                 <div>
                     {this.state.banquets.map((ban, i) => {
+                        // console.log("ban images")
                         return (
-                            <Card style={{ marginTop: '10%' }} onClick={() => this.cardClick(ban)}>
-                                <CardHeader title={ban.name} />
-                                <ListItem>
-                                    {ban.name}
-                                </ListItem>
-                            </Card>
-                            // <ListingCard key={i} name={ban.name} />
+                            <Card>
+                            <CardHeader
+                              title="URL Avatar"
+                              subtitle="Subtitle"
+                              avatar="images/jsa-128.jpg"
+                            />
+                            <CardMedia
+                              overlay={<CardTitle title="Overlay title" subtitle="Overlay subtitle" />}
+                            >
+                                     <img src={"data:image/jpeg;" + ban.images[0].image} />
+                            
+                            </CardMedia>
+                            <CardTitle title="Card title" subtitle="Card subtitle" />
+                            <CardText>
+                              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                              Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
+                              Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
+                              Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
+                            </CardText>
+                            <CardActions>
+                              <FlatButton label="Action1" />
+                            </CardActions>
+                          </Card>
                         )
-                    })}
-                </div>
-            </MuiThemeProvider>
+                    })
+                    }
+                </div >
+            </MuiThemeProvider >
         )
     }
 }

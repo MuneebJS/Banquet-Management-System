@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import registerServiceWorker from './registerServiceWorker';
 import './global.css';
-import Routes from './Routes'
+
 import app from './containers/app.js';
 import SignUp from './containers/SignUp.js';
 import SignIn from './containers/SignIn.js';
@@ -36,8 +36,8 @@ import storage from 'redux-persist/lib/storage';
 import { PersistGate } from 'redux-persist/integration/react'
 
 const persistConfig = {
-  key: 'user',
-  storage,
+    key: 'user',
+    storage,
 }
 
 const persistedReducer = persistReducer(persistConfig, reducer, applyMiddleware(thunk));
@@ -55,37 +55,31 @@ let persistor = persistStore(store)
 
 
 
-class App extends Component {
-  render() {
-    return (
-      <MuiThemeProvider>
-        <Provider store={store}>
-          <PersistGate loading={null} persistor={persistor}>
-            <BrowserRouter >
-              {/* <Header>
+class Routes extends Component {
+    render() {
+        return (
+            <Header>
                 <Switch>
-                  <Route exact path="/" component={Home} />
-                  <Route exact path="/app" component={app} />
-                  <Route path="/signin" component={SignIn} />
-                  <Route path="/signup/:role" component={SignUp} />
-                  <Route path="/list" component={BanquetList} />
-                  <Route path="/NMG" component={NMG} />
-                  <Route path="/booking/:uid" component={BookingForm} />
-                  <Route path="/Majestic" component={Majestic} />
-                  <Route path="/baquetDetails/:uid" component={BanquetDetail} />
-                  <Route path="/addBanquet" component={AddBanquet} />
-                  <Route path="/banquet/dashboad" component={AdminDashboard} />
-                  <Route path="*" render={() => <h2>Page not found</h2>} />
+                    <Route exact path="/" component={Home} />
+                    <PrivateRoute exact path="/" role="admin"><Home /></PrivateRoute>
+                    <Route exact path="/app" component={app} />
+                    <Route path="/signin" component={SignIn} />
+                    <Route path="/signup/:role" component={SignUp} />
+                    <Route path="/list" component={BanquetList} />
+                    <Route path="/NMG" component={NMG} />
+                    <Route path="/booking/:uid" component={BookingForm} />
+                    <Route path="/Majestic" component={Majestic} />
+                    <Route path="/baquetDetails/:uid" component={BanquetDetail} />
+                    {/* <Route  path="/addBanquet" component={AddBanquet} /> */}
+                    {/* <PrivateRoute  path="/addBanquet" component={AddBanquet} /> */}
+                    <Route path="/addBanquet" component={AddBanquet} />
+                    <Route path="/banquet/dashboad" component={AdminDashboard} />
+                    <Route path="*" render={() => <h2>Page not found</h2>} />
                 </Switch>
-              </Header> */}
-              <Routes />
-            </BrowserRouter>
-          </PersistGate>
-        </Provider>
-      </MuiThemeProvider>
-    );
-  }
+            </Header>
+        );
+    }
 }
 
 // export default withRouter(App);
-export default App;
+export default withRouter(Routes);
