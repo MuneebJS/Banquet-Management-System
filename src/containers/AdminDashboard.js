@@ -2,6 +2,7 @@
 import React from 'react';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import ReservationRequests from './ReservationRequests';
+import AcceptedRequests from './AcceptedRequests';
 
 const styles = {
     headline: {
@@ -42,11 +43,7 @@ export default class AdminDashboard extends React.Component {
                 <Tab label="Accepted" value="b">
                     <div>
                         <h2 style={styles.headline}>Accepted</h2>
-                        <p>
-                            This is another example of a controllable tab. Remember, if you
-                            use controllable Tabs, you need to give all of your tabs values or else
-                            you wont be able to select them.
-            </p>
+                        <AcceptedRequests />
                     </div>
                 </Tab>
             </Tabs>

@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import moment from 'moment';
+import lodash from 'lodash';
 import { connect } from 'react-redux';
 import { firebaseApp } from '../firebase.js';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -21,6 +23,8 @@ import Loader from '../components/Loader';
 import Error from '../components/Error';
 import { banquetRef } from '../firebase';
 import * as firebase from 'firebase';
+import "react-image-gallery/styles/css/image-gallery.css";
+import ImageGallery from 'react-image-gallery';
 
 const logoutStyles = {
     marginTop: 265
@@ -84,29 +88,44 @@ class BanquetDetail extends Component {
 
     render() {
         const { details, isLoading, isError } = this.state;
+        const images = [];
         console.log("this.state", this.state)
         if (isLoading) return <Loader />
         if (isError) return <Error>Something unexpected happened</Error>
+        if (details.images) {
+            lodash.forEach(details.images, (item) => {
+                images.push({ original: item.image, thumbnail: item.image })
+            })
+        }
+        const from = moment(`${details.timeFrom}`, 'hh:mm A').format('hh:mm A')
+        const to = moment(`${details.timeTo}`, 'hh:mm A').format('hh:mm A')
+        // console.log("details",  moment(`${details.timeFrom}`, 'hh:mm A').format('hh:mm A'))
         return (
             <MuiThemeProvider>
                 <div>
+                    <ImageGallery
+                        autoPlay={true}
+                        items={images}
+
+                    />
                     <Card>
-                        <CardMedia
-                            overlay={<CardTitle title={details.name} subtitle={details.location} />}
-                        >
-                            <img
-                                src="https://media.weddingz.in/images/bed39c320b1569a282d37b44f39c7f71/rajmahal-banquets-malad-west-mumbai.jpg"
-                                alt=""
-                                className="banquetDetailImg"
-                            />
-                        </CardMedia>
-                        <CardTitle title={details.name} subtitle={details.location} />
+                        <CardHeader
+                            title={details.name}
+                            subtitle={details.location}
+                        />
                         <CardText>
-                            {details.description}
+                            <div
+                                style={{ marginTop: 0 }}
+                            ><h3>Phone</h3><div> {details.phoneNumber}</div></div>
+                            <div
+                                style={{ marginTop: 20 }}
+                            ><h3>Description</h3><div> {details.description}</div></div>
+                            <div
+                                style={{ marginTop: 20 }}
+                            ><h3>Timings</h3><div>Open <strong>{from}</strong> till <strong>{to}</strong></div></div>
                         </CardText>
                         <CardActions>
-                            <FlatButton label="Reserve" primary={true} onClick={this.reserveHand} />
-                            {/* <FlatButton label="Action2" /> */}
+                            <FlatButton label="Reserve" onClick={this.reserveHand}/>
                         </CardActions>
                     </Card>
                 </div>

@@ -55,12 +55,13 @@ class BookingForm extends Component {
         event.preventDefault();
         const banquetUID = this.props.match.params.uid;
         const nestedRef = reservationRef.child(banquetUID + '/');
+        console.log("this.state .booking date", this.state.Booking_Date)
         nestedRef.push({
             customerName: this.state.Customer_name,
             customerAddress: this.state.Customer_address,
             customerCell: this.state.Customer_cell,
             customerEmail: this.state.Customer_email,
-            bookingDate: JSON.stringify(this.state.Booking_Date),
+            bookingDate: this.state.Booking_Date,
             uid: getUID('userUID')
         }).then(() => {
             console.log("successfull reserve")

@@ -21,7 +21,9 @@ import Majestic from './Majestic';
 import { banquetRef } from '../firebase';
 import Loader from '../components/Loader';
 import ListingCard from '../components/ListingCard';
-import { CardActions, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import { CardActions, CardMedia, CardTitle, CardText } from 'material-ui/Card';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
 
 
 
@@ -49,6 +51,7 @@ class list extends Component {
         this.getBanquets()
     }
     cardClick(ban) {
+
         sessionStorage.setItem("banquetDetails", JSON.stringify(ban));
         const uid = ban.userUID;
         if (uid) {
@@ -86,29 +89,24 @@ class list extends Component {
                     {this.state.banquets.map((ban, i) => {
                         // console.log("ban images")
                         return (
-                            <Card>
-                            <CardHeader
-                              title="URL Avatar"
-                              subtitle="Subtitle"
-                              avatar="images/jsa-128.jpg"
-                            />
-                            <CardMedia
-                              overlay={<CardTitle title="Overlay title" subtitle="Overlay subtitle" />}
-                            >
-                                     <img src={"data:image/jpeg;" + ban.images[0].image} />
-                            
-                            </CardMedia>
-                            <CardTitle title="Card title" subtitle="Card subtitle" />
-                            <CardText>
-                              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                              Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
-                              Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
-                              Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
-                            </CardText>
-                            <CardActions>
-                              <FlatButton label="Action1" />
-                            </CardActions>
-                          </Card>
+                            <Card containerStyle={{ marginTop: 20, padding: 20, paddingBottom: '0px !important' }}>
+                                <CardHeader
+                                    title={ban.name}
+                                    subtitle={ban.location}
+                                />
+                                <CardMedia
+                                    // mediaStyle={{ height: 600 }}
+                                    overlay={<CardTitle title={ban.name} subtitle={ban.phoneNumber} />}
+                                >
+                                    <img src={"data:image/jpeg;" + ban.images[0].image} />
+                                </CardMedia>
+                                <CardText>
+                                    {ban.description}
+                                </CardText>
+                                <CardActions>
+                                    <FlatButton label="View" primary={true} onClick={() => this.cardClick(ban)}/>
+                                </CardActions>
+                            </Card>
                         )
                     })
                     }
