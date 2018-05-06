@@ -34,6 +34,10 @@ import { saveState, loadState } from './lib/helpers';
 import { persistStore, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage';
 import { PersistGate } from 'redux-persist/integration/react'
+import Layout from './Layout';
+import AboutUs from './components/AboutUs';
+import UpdateBanquet from './containers/UpdateBanquet';
+
 
 const persistConfig = {
     key: 'user',
@@ -58,7 +62,7 @@ let persistor = persistStore(store)
 class Routes extends Component {
     render() {
         return (
-            <Header>
+            <Layout>
                 <Switch>
                     <Route exact path="/" component={Home} />
                     <PrivateRoute exact path="/" role="admin"><Home /></PrivateRoute>
@@ -74,9 +78,11 @@ class Routes extends Component {
                     {/* <PrivateRoute  path="/addBanquet" component={AddBanquet} /> */}
                     <Route path="/addBanquet" component={AddBanquet} />
                     <Route path="/banquet/dashboad" component={AdminDashboard} />
+                    <Route path="/banquet/update" component={UpdateBanquet} />
+                    <Route path="/aboutUs" component={AboutUs} />
                     <Route path="*" render={() => <h2>Page not found</h2>} />
                 </Switch>
-            </Header>
+            </Layout>
         );
     }
 }

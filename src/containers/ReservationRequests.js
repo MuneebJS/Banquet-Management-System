@@ -122,7 +122,6 @@ export default class ReservationRequests extends Component {
             <MuiThemeProvider>
                 <div>
                     {this.state.requests.map((item, i) => {
-                        console.log("itemmmmmmm", item)
                         const date = moment(item.bookingDate).format('dddd, MMMM Do YYYY');
                         return (
                             <Card style={{ marginTop: 40 }}>
@@ -131,7 +130,6 @@ export default class ReservationRequests extends Component {
                                     subtitle={date}
                                 />
                                 <CardText>
-                                    {/* {item.customerEmail} */}
                                     <div
                                         style={{ marginTop: 0 }}
                                     ><h3>Name</h3><div> {item.customerName}</div></div>

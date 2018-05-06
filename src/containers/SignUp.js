@@ -41,9 +41,14 @@ class SignUp extends Component {
                 nestedRef.set(userData)
                     .then(result => {
                         console.log("successfully data has been saved");
+                        const role = this.props.match.params.role;
                         this.props.setUser(userData);
                         saveUId(userInfo.uid);
-                        this.props.history.push("/list");
+                        if (role === 'admin') {
+                            this.props.history.push("/addBanquet");
+                        } else {
+                            this.props.history.push("/list");
+                        }
                     }).catch(error => {
                         console.log("an error occured after saving data", error);
                         this.setState({ error })

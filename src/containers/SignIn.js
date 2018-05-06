@@ -48,7 +48,7 @@ class SignIn extends Component {
                                     let data = snapshot.val();
                                     data.banquetInof = banquetData.val();
                                     _this.props.setUser(data);
-                                    _this.props.history.push("/list");
+                                    _this.props.history.push("/banquet/dashboad");
                                 })
                         } else {
                             _this.props.setUser(snapshot.val());

@@ -88,6 +88,8 @@ class list extends Component {
                 <div>
                     {this.state.banquets.map((ban, i) => {
                         // console.log("ban images")
+                        let imgBase64 = '';
+                        if (ban.images && ban.images.length) imgBase64 = ban.images[0].image;
                         return (
                             <Card containerStyle={{ marginTop: 20, padding: 20, paddingBottom: '0px !important' }}>
                                 <CardHeader
@@ -95,16 +97,15 @@ class list extends Component {
                                     subtitle={ban.location}
                                 />
                                 <CardMedia
-                                    // mediaStyle={{ height: 600 }}
                                     overlay={<CardTitle title={ban.name} subtitle={ban.phoneNumber} />}
                                 >
-                                    <img src={"data:image/jpeg;" + ban.images[0].image} />
+                                    <img src={"data:image/jpeg;" + imgBase64} />
                                 </CardMedia>
                                 <CardText>
                                     {ban.description}
                                 </CardText>
                                 <CardActions>
-                                    <FlatButton label="View" primary={true} onClick={() => this.cardClick(ban)}/>
+                                    <FlatButton label="View" primary={true} onClick={() => this.cardClick(ban)} />
                                 </CardActions>
                             </Card>
                         )
