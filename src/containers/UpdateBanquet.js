@@ -20,6 +20,8 @@ class AddBanquet extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            rangeFrom: '',
+            rangeTo: '',
             name: '',
             location: '',
             timeTo: '',
@@ -64,7 +66,9 @@ class AddBanquet extends Component {
                     phoneNumber: details.phoneNumber,
                     isLoading: false,
                     images: details.images,
-                    userUID: banquetUID
+                    userUID: banquetUID,
+                    rangeFrom: details.rangeFrom,
+                    rangeTo: details.rangeTo
                 })
             } else {
                 this.setState({
@@ -181,6 +185,9 @@ class AddBanquet extends Component {
                             </div>
                             <div> <input className="form-control reg-input" type="number" value={this.state.phoneNumber} placeholder='Phone Number' onChange={event => this.setState({ phoneNumber: event.target.value })} /></div>
                             <div><input className='form-control reg-input' type="email" value={this.state.email} placeholder='Email' onChange={event => this.setState({ email: event.target.value })} /></div>
+                            <div> <input className="form-control reg-input" type="number" value={this.state.rangeFrom} placeholder='Range From' onChange={event => this.setState({ rangeFrom: event.target.value })} /></div>
+                            <div><input className='form-control reg-input' type="number" value={this.state.rangeTo} placeholder='Range To' onChange={event => this.setState({ rangeTo: event.target.value })} /></div>
+
                         </div>
 
                         <div style={{ marginTop: '5px', textAlign: 'center' }}>
