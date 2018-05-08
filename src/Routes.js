@@ -40,8 +40,8 @@ import UpdateBanquet from './containers/UpdateBanquet';
 
 
 const persistConfig = {
-    key: 'user',
-    storage,
+	key: 'user',
+	storage,
 }
 
 const persistedReducer = persistReducer(persistConfig, reducer, applyMiddleware(thunk));
@@ -60,32 +60,32 @@ let persistor = persistStore(store)
 
 
 class Routes extends Component {
-    render() {
-        return (
-            <div>
-                <Layout>
-                    <Switch>
-                        <Route exact path="/" component={Home} />
-                        <PrivateRoute exact path="/" role="admin"><Home /></PrivateRoute>
-                        <Route exact path="/app" component={app} />
-                        <Route path="/signin" component={SignIn} />
-                        <Route path="/signup/:role" component={SignUp} />
-                        <Route path="/list" component={BanquetList} />
-                        <Route path="/NMG" component={NMG} />
-                        <PrivateRoute exact path="/" role="user"><Route path="/booking/:uid" component={BookingForm} /></PrivateRoute>
-                        <Route path="/Majestic" component={Majestic} />
-                        <Route path="/baquetDetails/:uid" component={BanquetDetail} />
-                        <PrivateRoute path="/addBanquet" role="admin"> <AddBanquet /></PrivateRoute>
-                        <PrivateRoute path="/banquet/dashboad" role="admin"><AdminDashboard /></PrivateRoute>
-                        <PrivateRoute path="/banquet/update" role="admin"> <UpdateBanquet /></PrivateRoute>
-                        <Route path="/aboutUs" component={AboutUs} />
-                        <Route path="*" render={() => <h2>Page not found</h2>} />
-                    </Switch>
-                </Layout>
+	render() {
+		return (
+			<div>
+				<Layout>
+					<Switch>
+						<Route exact path="/" component={Home} />
+						<PrivateRoute exact path="/" role="admin"><Home /></PrivateRoute>
+						<Route exact path="/app" component={app} />
+						<Route path="/signin" component={SignIn} />
+						<Route path="/signup/:role" component={SignUp} />
+						<Route path="/list" component={BanquetList} />
+						<Route path="/NMG" component={NMG} />
+						<PrivateRoute exact path="/booking/:uid" role="user"> <BookingForm /> </PrivateRoute>
+						<Route path="/Majestic" component={Majestic} />
+						<Route path="/baquetDetails/:uid" component={BanquetDetail} />
+						<PrivateRoute path="/addBanquet" role="admin"> <AddBanquet /></PrivateRoute>
+						<PrivateRoute path="/banquet/dashboad" role="admin"><AdminDashboard /></PrivateRoute>
+						<PrivateRoute path="/banquet/update" role="admin"> <UpdateBanquet /></PrivateRoute>
+						<Route path="/aboutUs" component={AboutUs} />
+						<Route path="*" render={() => <h2>Page not found</h2>} />
+					</Switch>
+				</Layout>
 
-            </div>
-        );
-    }
+			</div>
+		);
+	}
 }
 
 // export default withRouter(App);

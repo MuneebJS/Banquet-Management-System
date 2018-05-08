@@ -43,6 +43,7 @@ class BookingForm extends Component {
             Customer_email: '',
             Booking_Date: '',
             isError: false,
+            typeOfEvent: '',
         }
         this.submitCustomer = this.submitCustomer.bind(this);
     }
@@ -62,6 +63,7 @@ class BookingForm extends Component {
             customerCell: this.state.Customer_cell,
             customerEmail: this.state.Customer_email,
             bookingDate: this.state.Booking_Date,
+            typeOfEvent: this.state.typeOfEvent,
             uid: getUID('userUID')
         }).then(() => {
             console.log("successfull reserve")
@@ -83,7 +85,7 @@ class BookingForm extends Component {
         const { Customer_cell } = this.state;
         const { Customer_age } = this.state;
         const { Customer_email } = this.state;
-        const { Booking_Date } = this.state;
+        const { Booking_Date, typeOfEvent } = this.state;
         return (
             <MuiThemeProvider>
                 <div style={{ marginLeft: '20%', marginRight: '20%' }}>
@@ -100,6 +102,13 @@ class BookingForm extends Component {
                     </div>
                     <div className="reg-input">
                         <TextField value={Customer_cell} fullWidth={true} onChange={(event) => this.setState({ Customer_cell: event.target.value })} hintText='Contact No' floatingLabelText='Enter Customer Contact No' />
+                    </div>
+                     <div className="reg-input">
+                        <TextField
+                         value={typeOfEvent}
+                          fullWidth={true}
+                           onChange={(event) => this.setState({ typeOfEvent: event.target.value })}
+                            hintText='Specify your event' floatingLabelText='Type of event' />
                     </div>
                     {/* <div className="reg-input">
                         <TextField value={Customer_age} fullWidth={true} onChange={(event) => this.setState({ Customer_age: event.target.value })} hintText='Age' floatingLabelText='Age' />
