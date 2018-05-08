@@ -69,6 +69,7 @@ class AddBanquet extends Component {
         this.setState({
             isLoading: true,
         })
+        console.log("this state before save", this.state)
         const userUID = getUID('userUID');
         const nestedRef = banquetRef.child(userUID + '/');
         let imageFiles = [];
@@ -91,8 +92,9 @@ class AddBanquet extends Component {
             images: imageFiles,
             rangeFrom: rangeFrom,
             rangeTo: rangeTo,
+            email: email,
         }).then(result => {
-            this.props.history.push('/banquet/dashboard')
+            this.props.history.push('/banquet/dashboad')
         }).catch(error => {
             this.setState({
                 error
@@ -185,7 +187,7 @@ class AddBanquet extends Component {
                                     onDone={this.getFiles.bind(this)} />
                             </div>
                             <div> <input className="form-control reg-input" type="number" placeholder='Range from e.g. 100000' onChange={event => this.setState({ rangeFrom: event.target.value })} /></div>
-                            <div> <input className="form-control reg-input" type="number" placeholder='Range to e.g. 200000' onChange={event => this.setState({ rangeto: event.target.value })} /></div>
+                            <div> <input className="form-control reg-input" type="number" placeholder='Range to e.g. 200000' onChange={event => this.setState({ rangeTo: event.target.value })} /></div>
 
                             <div> <input className="form-control reg-input" type="number" placeholder='Phone Number' onChange={event => this.setState({ phoneNumber: event.target.value })} /></div>
                             <div><input className='form-control reg-input' type="email" placeholder='Email' onChange={event => this.setState({ email: event.target.value })} /></div>

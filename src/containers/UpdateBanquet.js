@@ -89,7 +89,7 @@ class AddBanquet extends Component {
         })
     }
     saveHandler() {
-        const { name, description, location, timeTo, timeFrom, phoneNumber, email, files, images } = this.state;
+        const { name, description, location, timeTo, timeFrom, phoneNumber, email, files, images, rangeFrom, rangeTo } = this.state;
         this.setState({
             isLoading: true,
         })
@@ -116,6 +116,8 @@ class AddBanquet extends Component {
             userUID: userUID,
             images: imageFiles,
             email: email,
+            rangeFrom: rangeFrom,
+            rangeTo: rangeTo
         }).then(result => {
             this.props.history.push('/banquet/dashboad')
         }).catch(error => {

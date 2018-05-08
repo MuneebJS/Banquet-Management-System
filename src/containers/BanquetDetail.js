@@ -122,7 +122,7 @@ class BanquetDetail extends Component {
                             ><h3>Description</h3><div> {details.description}</div></div>
                             <div
                                 style={{ marginTop: 20 }}
-                            ><h3>Price</h3><div>from <strong>{details.rangeFrom}</strong> till <strong>{details.rangeTo}</strong></div></div>
+                            ><h3>Price Range</h3><div><strong>{details.rangeFrom}</strong> - <strong>{details.rangeTo}</strong></div></div>
                             <div
                                 style={{ marginTop: 20 }}
                             ><h3>Timings</h3><div>Open <strong>{from}</strong> till <strong>{to}</strong></div></div>
