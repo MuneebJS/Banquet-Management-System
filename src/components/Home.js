@@ -1,7 +1,9 @@
 import React from 'react';
+import homeImg from '../components/home.jpg';
+
 
 export default (props) => (
-    <h2 className="home-wrap">
-        Welcome to banquet app
-    </h2>
+    <div className="container-fluid home">
+        <img src={homeImg} style={{width: '100%'}}/>
+    </div>
 )

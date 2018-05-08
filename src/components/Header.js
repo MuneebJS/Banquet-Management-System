@@ -65,7 +65,7 @@ class Header extends Component {
                             <NavLink to="/banquet/dashboad" onClick={this._toggleDrawer}>Dashboard</NavLink>
                         </ListItem>
                         <ListItem>
-                            <NavLink to="/banquet/update" onClick={this._toggleDrawer}>Profile</NavLink>
+                            <NavLink to="/banquet/update" onClick={this._toggleDrawer}>Update Banquet Details</NavLink>
                         </ListItem>
                         {/* <ListItem>
                             <NavLink to="/contactUs" onClick={this._toggleDrawer}>Contact Us</NavLink>

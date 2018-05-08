@@ -76,7 +76,7 @@ class SignUp extends Component {
                             <div> <input className="form-control reg-input" type="text" placeholder='email' onChange={event => this.setState({ email: event.target.value })} /></div>
                             <div> <input className="form-control reg-input" type="text" placeholder='First Name' onChange={event => this.setState({ firstName: event.target.value })} /></div>
                             <div> <input className="form-control reg-input" type="text" placeholder='Last Name' onChange={event => this.setState({ lastName: event.target.value })} /></div>
-                            <div> <input className="form-control reg-input" type="text" placeholder='Phone Number' onChange={event => this.setState({ phoneNumber: event.target.value })} /></div>
+                            <div> <input className="form-control reg-input" type="number" placeholder='Phone Number' onChange={event => this.setState({ phoneNumber: event.target.value })} /></div>
 
                             <div><input className='form-control reg-input' type="password" placeholder='Password' onChange={event => this.setState({ password: event.target.value })} /></div>
                         </div>

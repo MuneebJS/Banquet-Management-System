@@ -3,6 +3,7 @@ import React from 'react';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import ReservationRequests from './ReservationRequests';
 import AcceptedRequests from './AcceptedRequests';
+import {withRouter} from 'react-router-dom';
 
 const styles = {
     headline: {
@@ -13,7 +14,7 @@ const styles = {
     },
 };
 
-export default class AdminDashboard extends React.Component {
+ class AdminDashboard extends React.Component {
 
     constructor(props) {
         super(props);
@@ -50,3 +51,7 @@ export default class AdminDashboard extends React.Component {
         );
     }
 }
+
+
+
+export default withRouter(AdminDashboard);

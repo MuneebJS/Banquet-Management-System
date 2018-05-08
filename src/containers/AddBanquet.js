@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import { firebaseApp } from '../firebase';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -27,6 +27,8 @@ class AddBanquet extends Component {
             email: '',
             isLoading: '',
             files: [],
+            rangeFrom: '',
+            rangeTo: '',
             error: {
                 message: ''
             }
@@ -63,7 +65,7 @@ class AddBanquet extends Component {
         // });
     }
     saveHandler() {
-        const { name, description, location, timeTo, timeFrom, phoneNumber, email, files } = this.state;
+        const { name, description, location, timeTo, timeFrom, phoneNumber, email, files, rangeFrom, rangeTo } = this.state;
         this.setState({
             isLoading: true,
         })
@@ -86,7 +88,9 @@ class AddBanquet extends Component {
             timeTo: JSON.stringify(timeTo),
             timeFrom: JSON.stringify(timeFrom),
             userUID: userUID,
-            images: imageFiles
+            images: imageFiles,
+            rangeFrom: rangeFrom,
+            rangeTo: rangeTo,
         }).then(result => {
             this.props.history.push('/banquet/dashboard')
         }).catch(error => {
@@ -151,6 +155,7 @@ class AddBanquet extends Component {
 
 
     render() {
+        console.log("this.props", this.props)
         return (
             <MuiThemeProvider>
                 <div>
@@ -179,7 +184,10 @@ class AddBanquet extends Component {
                                     multiple={true}
                                     onDone={this.getFiles.bind(this)} />
                             </div>
-                            <div> <input className="form-control reg-input" type="text" placeholder='Phone Number' onChange={event => this.setState({ phoneNumber: event.target.value })} /></div>
+                            <div> <input className="form-control reg-input" type="number" placeholder='Range from e.g. 100000' onChange={event => this.setState({ rangeFrom: event.target.value })} /></div>
+                            <div> <input className="form-control reg-input" type="number" placeholder='Range to e.g. 200000' onChange={event => this.setState({ rangeto: event.target.value })} /></div>
+
+                            <div> <input className="form-control reg-input" type="number" placeholder='Phone Number' onChange={event => this.setState({ phoneNumber: event.target.value })} /></div>
                             <div><input className='form-control reg-input' type="email" placeholder='Email' onChange={event => this.setState({ email: event.target.value })} /></div>
                         </div>
 
@@ -194,4 +202,4 @@ class AddBanquet extends Component {
     }
 }
 
-export default AddBanquet;
+export default withRouter(AddBanquet);

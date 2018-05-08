@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import { firebaseApp } from '../firebase';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -179,7 +179,7 @@ class AddBanquet extends Component {
                                     multiple={true}
                                     onDone={this.getFiles.bind(this)} />
                             </div>
-                            <div> <input className="form-control reg-input" type="text" value={this.state.phoneNumber} placeholder='Phone Number' onChange={event => this.setState({ phoneNumber: event.target.value })} /></div>
+                            <div> <input className="form-control reg-input" type="number" value={this.state.phoneNumber} placeholder='Phone Number' onChange={event => this.setState({ phoneNumber: event.target.value })} /></div>
                             <div><input className='form-control reg-input' type="email" value={this.state.email} placeholder='Email' onChange={event => this.setState({ email: event.target.value })} /></div>
                         </div>
 
@@ -194,4 +194,4 @@ class AddBanquet extends Component {
     }
 }
 
-export default AddBanquet;
+export default withRouter(AddBanquet);
