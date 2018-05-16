@@ -80,7 +80,7 @@ class Header extends Component {
                 return (
                     <div>
                         <ListItem leftAvatar={<Avatar>{this.props.userInfo.firstName[0]}</Avatar>}>
-                            <NavLink to="/dashboard/user" onClick={this._toggleDrawer}>Dashboard</NavLink>
+                            <NavLink to="/user/dashboad" onClick={this._toggleDrawer}>Dashboard</NavLink>
                         </ListItem>
                         <ListItem>
                             <NavLink to="/list" onClick={this._toggleDrawer}>List of Banquets</NavLink>
@@ -116,9 +116,6 @@ class Header extends Component {
                             <FlatButton style={logoutStyles} icon={<Logout />} label="Signout" fullWidth={true} onTouchTap={() => this.signOut()} />
                         </List>
                     </Drawer>
-                    <div className="innerWrap container">
-                        {/* {this.props.children} */}
-                    </div>
                 </div>
             );
         } else {
@@ -175,16 +172,12 @@ class Header extends Component {
                         <a href="http://clashhacks.in/">Link</a>
                         <a href="http://clashhacks.in/">Link</a>
                     </div>
-                    <div className="innerWrap container">
-                        {/* {this.props.children} */}
-                    </div>
                 </div >
             )
         }
     }
     render() {
         const { userInfo } = this.props;
-        console.log("userinf from header", userInfo);
         return this.renderContent();
     }
 }

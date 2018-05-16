@@ -43,50 +43,51 @@ export default class ReservationRequests extends Component {
             isAccepting: false
         }
         this.getBanquets = this.getBanquets.bind(this);
-        this.acceptHand = this.acceptHand.bind(this);
+        // this.acceptHand = this.acceptHand.bind(this);
         this.rejectHand = this.rejectHand.bind(this);
     }
     componentDidMount() {
         this.getBanquets()
     }
 
-    acceptHand(ban) {
-        this.setState({
-            isAccepting: true,
-        })
-        const banquetUID = getUID('userUID');
-        const nestedRef = acceptedRef.child(banquetUID + '/');
-        const nestedCus = customerAccetedRef.child(ban.uid + '/')
-        nestedRef.push(ban).then(() => {
-            const resNestedRef = reservationRef.child(`${banquetUID}/${ban.key}`)
-            resNestedRef.remove().then(() => {
-                ban.uid = banquetUID;
-                delete ban.key;
-                nestedCus.push(ban)
-                    .then(() => {
-                        this.setState({
-                            isError: false,
-                            isAccepting: false,
-                        });
-                    })
-            }).catch(err => {
-                this.setState({
-                    isError: true
-                })
-            })
-        })
-    }
+    // acceptHand(ban) {
+    //     this.setState({
+    //         isAccepting: true,
+    //     })
+    //     const userUID = getUID('userUID');
+    //     const nestedRef = acceptedRef.child(userUID + '/');
+    //     const nestedCus = customerAccetedRef.child(ban.uid + '/')
+    //     nestedRef.push(ban).then(() => {
+    //         const resNestedRef = reservationRef.child(`${userUID}/${ban.key}`)
+    //         resNestedRef.remove().then(() => {
+    //             ban.uid = userUID;
+    //             delete ban.key;
+    //             nestedCus.push(ban)
+    //                 .then(() => {
+    //                     this.setState({
+    //                         isError: false,
+    //                         isAccepting: false,
+    //                     });
+    //                 })
+    //         }).catch(err => {
+    //             this.setState({
+    //                 isError: true
+    //             })
+    //         })
+    //     })
+    // }
 
 
     rejectHand(ban) {
         this.setState({
             isAccepting: true,
         })
-        const banquetUID = getUID('userUID');
-        const resNestedRef = reservationRef.child(`${banquetUID}/${ban.key}`)
+        const userUID = getUID('userUID');
+        const resNestedRef = customerRejectedRef.child(`${userUID}/${ban.key}`)
         const nestedCus = customerRejectedRef.child(ban.uid + '/')
         resNestedRef.remove().then(() => {
-            ban.uid = banquetUID;
+            ban.uid = userUID;
+            
             delete ban.key;
             nestedCus.push(ban)
                 .then(() => {
@@ -103,10 +104,11 @@ export default class ReservationRequests extends Component {
         // })
     }
     getBanquets() {
-        const banquetUID = getUID('userUID')
-        firebase.database().ref('ReservationRequests/' + banquetUID).on('value', (snapshot) => {
+        const userUID = getUID('userUID')
+        firebase.database().ref('CustomerRejectedRequests/' + userUID).on('value', (snapshot) => {
             const requests = snapshot.val();
             const customBanArr = [];
+            console.log("requests", requests)
             for (var prop in requests) {
                 // skip loop if the property is from prototype
                 if (!requests.hasOwnProperty(prop)) continue;
@@ -150,10 +152,10 @@ export default class ReservationRequests extends Component {
                                         style={{ marginTop: 20 }}
                                     ><h3>Address</h3><div> {item.customerAddress}</div></div>
                                 </CardText>
-                                <FlatButton label={isAccepting ? 'Accepting' : 'Accept'}
+                                {/* <FlatButton label={isAccepting ? 'Accepting' : 'Accept'}
                                     primary={true} onClick={() => this.acceptHand(item)} />
                                 <FlatButton label={isAccepting ? 'Rejecting' : 'Reject'}
-                                    filled={true} secondary={true} onClick={() => this.rejectHand(item)} />
+                                    filled={true} secondary={true} onClick={() => this.rejectHand(item)} /> */}
                             </Card>
                         )
                     })}

@@ -17,6 +17,8 @@ export const userRef = firebase.database().ref('Users');
 export const banquetRef = firebase.database().ref('Banquets');
 export const reservationRef = firebase.database().ref('ReservationRequests');
 export const acceptedRef = firebase.database().ref('AcceptedRequests');
+export const customerAccetedRef = firebase.database().ref('CustomerAcceptedRequests');
+export const customerRejectedRef = firebase.database().ref('CustomerRejectedRequests');
 
 export const banquetImagesRef = firebase.storage().ref('banquetImages');
 // export const completeGoalRef = firebase.database().ref('completeGoals')

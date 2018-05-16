@@ -20,6 +20,7 @@ import Loader from '../components/Loader';
 import Title from '../components/Title';
 import Error from '../components/Error';
 import { getUID } from '../lib/helpers.js';
+import { withRouter } from 'react-router-dom';
 
 
 const logoutStyles = {
@@ -55,6 +56,8 @@ class BookingForm extends Component {
     submitCustomer(event) {
         event.preventDefault();
         const banquetUID = this.props.match.params.uid;
+        // const banquetUID = getUID;
+
         const nestedRef = reservationRef.child(banquetUID + '/');
         console.log("this.state .booking date", this.state.Booking_Date)
         nestedRef.push({
@@ -64,7 +67,7 @@ class BookingForm extends Component {
             customerEmail: this.state.Customer_email,
             bookingDate: this.state.Booking_Date,
             typeOfEvent: this.state.typeOfEvent,
-            uid: getUID('userUID')
+            uid: getUID('userUID') 
         }).then(() => {
             console.log("successfull reserve")
             this.setState({
@@ -86,6 +89,7 @@ class BookingForm extends Component {
         const { Customer_age } = this.state;
         const { Customer_email } = this.state;
         const { Booking_Date, typeOfEvent } = this.state;
+        console.log("this.props.match.params.uid", this.props.match.params.uid)
         return (
             <MuiThemeProvider>
                 <div style={{ marginLeft: '20%', marginRight: '20%' }}>
@@ -103,11 +107,11 @@ class BookingForm extends Component {
                     <div className="reg-input">
                         <TextField value={Customer_cell} fullWidth={true} onChange={(event) => this.setState({ Customer_cell: event.target.value })} hintText='Contact No' floatingLabelText='Enter Customer Contact No' />
                     </div>
-                     <div className="reg-input">
+                    <div className="reg-input">
                         <TextField
-                         value={typeOfEvent}
-                          fullWidth={true}
-                           onChange={(event) => this.setState({ typeOfEvent: event.target.value })}
+                            value={typeOfEvent}
+                            fullWidth={true}
+                            onChange={(event) => this.setState({ typeOfEvent: event.target.value })}
                             hintText='Specify your event' floatingLabelText='Type of event' />
                     </div>
                     {/* <div className="reg-input">
@@ -135,4 +139,4 @@ function mapStateToProps(state) {
     return {}
 }
 
-export default connect(mapStateToProps, null)(BookingForm);
+export default connect(mapStateToProps, null)(withRouter(BookingForm));

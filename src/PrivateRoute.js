@@ -25,7 +25,7 @@ class PrivateRoute extends React.Component {
         // console.log(this.props);
     }
     render() {
-        console.log("checkAuth from private route", this.checkAuth());
+        // console.log("checkAuth from private route", this.checkAuth());
         // if (this.props.isAuthPending) return <h2>...Loading</h2>;
         // console.log("came after ifffffffff")
         return (

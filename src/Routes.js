@@ -20,6 +20,7 @@ import BanquetList from './containers/BanquetList';
 import NMG from './containers/NMG';
 import AddBanquet from './containers/AddBanquet';
 import AdminDashboard from './containers/AdminDashboard';
+import UserDashboard from './containers/UserDashboard';
 import PrivateRoute from './PrivateRoute';
 import thunk from 'redux-thunk'
 
@@ -72,11 +73,13 @@ class Routes extends Component {
 						<Route path="/signup/:role" component={SignUp} />
 						<Route path="/list" component={BanquetList} />
 						<Route path="/NMG" component={NMG} />
-						<PrivateRoute exact path="/booking/:uid" role="user"> <BookingForm /> </PrivateRoute>
+						{/* <PrivateRoute exact path="/booking/:uid" role="user"> <BookingForm /> </PrivateRoute> */}
+						<Route exact path="/booking/:uid" component={BookingForm} />
 						<Route path="/Majestic" component={Majestic} />
 						<Route path="/baquetDetails/:uid" component={BanquetDetail} />
 						<PrivateRoute path="/addBanquet" role="admin"> <AddBanquet /></PrivateRoute>
 						<PrivateRoute path="/banquet/dashboad" role="admin"><AdminDashboard /></PrivateRoute>
+						<PrivateRoute path="/user/dashboad" role="user"><UserDashboard /></PrivateRoute>
 						<PrivateRoute path="/banquet/update" role="admin"> <UpdateBanquet /></PrivateRoute>
 						<Route path="/aboutUs" component={AboutUs} />
 						<Route path="*" render={() => <h2>Page not found</h2>} />
