@@ -75,18 +75,22 @@ export default class AcceptedRequests extends Component {
         firebase.database().ref('CustomerAcceptedRequests/' + userUID).on('value', (snapshot) => {
             const requests = snapshot.val();
             const customBanArr = [];
-            console.log("requests", requests)
             for (var prop in requests) {
                 // skip loop if the property is from prototype
                 if (!requests.hasOwnProperty(prop)) continue;
                 let reqData = requests[prop];
                 reqData.key = prop;
-                customBanArr.push(reqData)
+
+                firebase.database().ref('Banquets/' + reqData.uid).once('value').then((banquetData) => {
+                    reqData.banquetInfo = banquetData.val();
+                    customBanArr.push(reqData)
+                    this.setState({
+                        requests: customBanArr,
+                        isLoading: false,
+                    })
+                })
             }
-            this.setState({
-                requests: customBanArr,
-                isLoading: false,
-            })
+
         })
     }
 
@@ -94,6 +98,7 @@ export default class AcceptedRequests extends Component {
         // console.log("this.state", this.state)
         const { isAccepting } = this.state;
         if (this.state.isLoading) return <Loader />
+        console.log("this state requests", this.state.requests);
         return (
             <MuiThemeProvider>
                 <div>
@@ -102,25 +107,19 @@ export default class AcceptedRequests extends Component {
                         return (
                             <Card style={{ marginTop: 40 }}>
                                 <CardHeader
-                                    title={item.customerName}
-                                    subtitle={date}
+                                    title={item.banquetInfo.name}
+                                    subtitle={item.banquetInfo.location}
                                 />
                                 <CardText>
+                                   <h2> Congratulations! Your reservation request is being accepted.</h2>
+                    
                                     <div
                                         style={{ marginTop: 0 }}
-                                    ><h3>Name</h3><div> {item.customerName}</div></div>
+                                    ><h3>Phone</h3><div> {item.banquetInfo.phoneNumber}</div></div>
                                     <div
                                         style={{ marginTop: 20 }}
-                                    ><h3>Email</h3><div> {item.customerEmail}</div></div>
-                                    <div
-                                        style={{ marginTop: 20 }}
-                                    ><h3>Phone</h3><div> {item.customerCell}</div></div>
-                                    <div
-                                        style={{ marginTop: 20 }}
-                                    ><h3>Address</h3><div> {item.customerAddress}</div></div>
+                                    ><h3>Email</h3><div> {item.banquetInfo.email}</div></div> 
                                 </CardText>
-                                {/* <FlatButton label={isAccepting ? 'Removing' : 'Remove'}
-                                    filled={true} secondary={true} onClick={() => this.removeHand(item)} /> */}
                             </Card>
                         )
                     })}

@@ -22,6 +22,8 @@ import Error from '../components/Error';
 import { getUID } from '../lib/helpers.js';
 import { withRouter } from 'react-router-dom';
 
+import ReservationDates from './ReservationDates';
+
 
 const logoutStyles = {
     marginTop: 265
@@ -48,6 +50,20 @@ class BookingForm extends Component {
         }
         this.submitCustomer = this.submitCustomer.bind(this);
     }
+    componentDidMount() {
+        const bookingDate = new Date();
+        bookingDate.setFullYear(localStorage.getItem('bookingYear'));
+        bookingDate.setMonth(localStorage.getItem('bookingMonth'));
+        bookingDate.setDate(localStorage.getItem('bookingDate'));
+        console.log("booking", bookingDate)
+        this.setState({
+            Booking_Date: bookingDate
+        });
+
+        // // minDate.setHours(0, 0, 0, 0);
+        // maxDate.setFullYear(maxDate.getFullYear() + 1);
+        // maxDate.setHours(0, 0, 0, 0);
+    }
     _toggleDrawer() {
         this.setState({
             drawerOpened: !this.state.drawerOpened
@@ -59,15 +75,24 @@ class BookingForm extends Component {
         // const banquetUID = getUID;
 
         const nestedRef = reservationRef.child(banquetUID + '/');
-        console.log("this.state .booking date", this.state.Booking_Date)
+        // console.log("this.state .booking date", {
+        //     customerName: this.state.Customer_name,
+        //     customerAddress: this.state.Customer_address,
+        //     customerCell: this.state.Customer_cell,
+        //     customerEmail: this.state.Customer_email,
+        //     bookingDate: this.state.Booking_Date,
+        //     typeOfEvent: this.state.typeOfEvent,
+        //     uid: getUID('userUID') 
+        // })
+
         nestedRef.push({
             customerName: this.state.Customer_name,
             customerAddress: this.state.Customer_address,
             customerCell: this.state.Customer_cell,
             customerEmail: this.state.Customer_email,
-            bookingDate: this.state.Booking_Date,
+            bookingDate: this.state.Booking_Date.toString(),
             typeOfEvent: this.state.typeOfEvent,
-            uid: getUID('userUID') 
+            uid: getUID('userUID')
         }).then(() => {
             console.log("successfull reserve")
             this.setState({
@@ -89,14 +114,14 @@ class BookingForm extends Component {
         const { Customer_age } = this.state;
         const { Customer_email } = this.state;
         const { Booking_Date, typeOfEvent } = this.state;
-        console.log("this.props.match.params.uid", this.props.match.params.uid)
+        // return <ReservationDates />;
         return (
             <MuiThemeProvider>
                 <div style={{ marginLeft: '20%', marginRight: '20%' }}>
                     <Title>Reservation Form</Title>
                     {this.state.isError && < Error > Something unextpedt Happened</Error>}
                     <div className="reg-input">
-                        <TextField value={Customer_name} fullWidth={true} onChange={(event) => this.setState({ Customer_name: event.target.value })} hintText='Enter Full Name' floatingLabelText='Enter Full Name' />
+                        <TextField type="email" value={Customer_name} fullWidth={true} onChange={(event) => this.setState({ Customer_name: event.target.value })} hintText='Enter Full Name' floatingLabelText='Enter Full Name' />
                     </div>
                     <div className="reg-input">
                         <TextField value={Customer_address} fullWidth={true} onChange={(event) => this.setState({ Customer_address: event.target.value })} hintText='Enter Customer Address' floatingLabelText='Enter Customer Address' />
@@ -122,6 +147,12 @@ class BookingForm extends Component {
                             floatingLabelText="Reservation Date"
                             onChange={(e, date) => this.setState({ Booking_Date: date })}
                             fullWidth={true}
+                            // minDate={this.state.Booking_Date}
+                            // maxDate={this.state.Booking_Date}
+                            // disableYearSelection={true}
+                            // disableMonthSelection={true}
+                            shouldDisableDate={true}
+                            value={this.state.Booking_Date}
                         // autoOk={this.state.autoOk}
                         // minDate={this.state.minDate}
                         // maxDate={this.state.maxDate}

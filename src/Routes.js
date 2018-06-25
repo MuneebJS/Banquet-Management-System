@@ -38,6 +38,7 @@ import { PersistGate } from 'redux-persist/integration/react'
 import Layout from './Layout';
 import AboutUs from './components/AboutUs';
 import UpdateBanquet from './containers/UpdateBanquet';
+import ReservationDates from './containers/ReservationDates';
 
 
 const persistConfig = {
@@ -75,6 +76,7 @@ class Routes extends Component {
 						<Route path="/NMG" component={NMG} />
 						{/* <PrivateRoute exact path="/booking/:uid" role="user"> <BookingForm /> </PrivateRoute> */}
 						<Route exact path="/booking/:uid" component={BookingForm} />
+						<Route exact path="/bookingDates/:uid" component={ReservationDates} />
 						<Route path="/Majestic" component={Majestic} />
 						<Route path="/baquetDetails/:uid" component={BanquetDetail} />
 						<PrivateRoute path="/addBanquet" role="admin"> <AddBanquet /></PrivateRoute>

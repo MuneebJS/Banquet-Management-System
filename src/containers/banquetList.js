@@ -45,10 +45,12 @@ class list extends Component {
         }
         this.getBanquets = this.getBanquets.bind(this);
         this.cardClick = this.cardClick.bind(this);
+        this.getBanquetsByDate = this.getBanquetsByDate.bind(this);
     }
     componentDidMount() {
         sessionStorage.removeItem('banquetDetails');
-        this.getBanquets()
+        this.getBanquets();
+        this.getBanquetsByDate();
     }
     cardClick(ban) {
 
@@ -71,6 +73,17 @@ class list extends Component {
                 banquets: customBanArr,
             })
         })
+    }
+    getBanquetsByDate() {
+        // console.log("got the data! =======", this)
+        const _this = this;
+        // banquetRef.orderByChild("date").startAt(startDate).endAt(endDate)
+        banquetRef.orderByChild("location").equalTo('north karachi')
+        // banquetRef
+        // .endAt('north karachi')
+            .on("value", function (snapshot) {
+                console.log("got the data!", snapshot.val());
+            });
     }
     _toggleDrawer() {
         this.setState({

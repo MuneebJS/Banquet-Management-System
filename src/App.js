@@ -9,7 +9,7 @@ import SignIn from './containers/SignIn.js';
 // import list from './containers/BanquetList';
 import { Router, Route, BrowserRouter } from 'react-router-dom';
 import createBrowserHistory from 'history/createBrowserHistory';
-import { Provider, connects } from 'react-redux'
+import { Provider, connect } from 'react-redux'
 import { createStore, applyMiddleware } from 'redux'
 import { Switch, withRouter } from 'react-router-dom';
 import { firebaseApp } from './firebase'
@@ -34,6 +34,7 @@ import { saveState, loadState } from './lib/helpers';
 import { persistStore, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage';
 import { PersistGate } from 'redux-persist/integration/react'
+import injectTapEventPlugin from 'react-tap-event-plugin';
 
 const persistConfig = {
   key: 'user',
@@ -56,6 +57,7 @@ let persistor = persistStore(store)
 
 
 class App extends Component {
+
   render() {
     return (
       <MuiThemeProvider>

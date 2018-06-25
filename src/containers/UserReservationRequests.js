@@ -87,7 +87,7 @@ export default class ReservationRequests extends Component {
         const nestedCus = customerRejectedRef.child(ban.uid + '/')
         resNestedRef.remove().then(() => {
             ban.uid = userUID;
-            
+
             delete ban.key;
             nestedCus.push(ban)
                 .then(() => {
@@ -104,22 +104,35 @@ export default class ReservationRequests extends Component {
         // })
     }
     getBanquets() {
+        // console.log("klajsfdlja")
         const userUID = getUID('userUID')
         firebase.database().ref('CustomerRejectedRequests/' + userUID).on('value', (snapshot) => {
             const requests = snapshot.val();
             const customBanArr = [];
             console.log("requests", requests)
-            for (var prop in requests) {
-                // skip loop if the property is from prototype
-                if (!requests.hasOwnProperty(prop)) continue;
-                let reqData = requests[prop];
-                reqData.key = prop;
-                customBanArr.push(reqData)
+            if (!requests) {
+                this.setState({
+                    isLoading: false,
+                })
+            } else {
+                for (var prop in requests) {
+                    // skip loop if the property is from prototype
+                    if (!requests.hasOwnProperty(prop)) continue;
+                    let reqData = requests[prop];
+                    reqData.key = prop;
+                    // customBanArr.push(reqData)
+
+                    firebase.database().ref('Banquets/' + reqData.uid).once('value').then((banquetData) => {
+                        reqData.banquetInfo = banquetData.val();
+                        customBanArr.push(reqData)
+                        console.log('cutsomerBanarr', customBanArr)
+                        this.setState({
+                            requests: customBanArr,
+                            isLoading: false,
+                        })
+                    })
+                }
             }
-            this.setState({
-                requests: customBanArr,
-                isLoading: false,
-            })
         })
     }
 
@@ -127,6 +140,7 @@ export default class ReservationRequests extends Component {
         // console.log("this.state", this.state)
         const { isAccepting } = this.state;
         if (this.state.isLoading) return <Loader />
+        
         return (
             <MuiThemeProvider>
                 <div>
@@ -139,23 +153,15 @@ export default class ReservationRequests extends Component {
                                     subtitle={date}
                                 />
                                 <CardText>
+                                    <h2>                                    We are sorry that your request is being rejected.</h2>
+
                                     <div
                                         style={{ marginTop: 0 }}
-                                    ><h3>Name</h3><div> {item.customerName}</div></div>
+                                    ><h3>Phone</h3><div> {item.banquetInfo.phoneNumber}</div></div>
                                     <div
                                         style={{ marginTop: 20 }}
-                                    ><h3>Email</h3><div> {item.customerEmail}</div></div>
-                                    <div
-                                        style={{ marginTop: 20 }}
-                                    ><h3>Phone</h3><div> {item.customerCell}</div></div>
-                                    <div
-                                        style={{ marginTop: 20 }}
-                                    ><h3>Address</h3><div> {item.customerAddress}</div></div>
+                                    ><h3>Email</h3><div> {item.banquetInfo.email}</div></div>
                                 </CardText>
-                                {/* <FlatButton label={isAccepting ? 'Accepting' : 'Accept'}
-                                    primary={true} onClick={() => this.acceptHand(item)} />
-                                <FlatButton label={isAccepting ? 'Rejecting' : 'Reject'}
-                                    filled={true} secondary={true} onClick={() => this.rejectHand(item)} /> */}
                             </Card>
                         )
                     })}

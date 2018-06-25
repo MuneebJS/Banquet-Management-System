@@ -17,7 +17,7 @@ import Logout from 'material-ui/svg-icons/action/power-settings-new';
 import NMG from './NMG';
 import { getUID } from '../lib/helpers';
 import Majestic from './Majestic';
-import { acceptedRef, reservationRef, customerAccetedRef, customerRejectedRef } from '../firebase';
+import { acceptedRef, reservationRef, customerAccetedRef, customerRejectedRef, reservationDates } from '../firebase';
 import FlatButton from 'material-ui/FlatButton';
 import Loader from '../components/Loader';
 import * as firebase from 'firebase';
@@ -54,9 +54,15 @@ export default class ReservationRequests extends Component {
         this.setState({
             isAccepting: true,
         })
+        const bookingDate = new Date(ban.bookingDate);
         const banquetUID = getUID('userUID');
         const nestedRef = acceptedRef.child(banquetUID + '/');
         const nestedCus = customerAccetedRef.child(ban.uid + '/')
+        const year = bookingDate.getYear();
+        const month = bookingDate.getMonth();
+        const date = bookingDate.getDate();
+        const completeResDateRef = reservationDates.child(`${ban.uid}/${year}/${month}`)
+
         nestedRef.push(ban).then(() => {
             const resNestedRef = reservationRef.child(`${banquetUID}/${ban.key}`)
             resNestedRef.remove().then(() => {
@@ -68,12 +74,15 @@ export default class ReservationRequests extends Component {
                             isError: false,
                             isAccepting: false,
                         });
-                    })
-            }).catch(err => {
-                this.setState({
-                    isError: true
-                })
+                    });
+                completeResDateRef.push(date)
+                    .then(() => console.log("sr date save success"));
             })
+                .catch(err => {
+                    this.setState({
+                        isError: true
+                    })
+                })
         })
     }
 
@@ -112,6 +121,7 @@ export default class ReservationRequests extends Component {
                 if (!requests.hasOwnProperty(prop)) continue;
                 let reqData = requests[prop];
                 reqData.key = prop;
+
                 customBanArr.push(reqData)
             }
             this.setState({
