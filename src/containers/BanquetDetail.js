@@ -75,7 +75,8 @@ class BanquetDetail extends Component {
         console.log("reserve clicked")
         // sessionStorage.setItem('banquetUID', this.state.details.userUID);
 
-        this.props.history.push('/booking/' + this.state.details.userUID);
+        // this.props.history.push('/booking/' + this.state.details.userUID);
+        this.props.history.push('/bookingDates/' + this.state.details.userUID);
     }
     _toggleDrawer() {
         this.setState({
