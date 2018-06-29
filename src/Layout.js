@@ -21,7 +21,6 @@ class Layout extends React.Component {
                 isHome: true,
                 styles,
             })
-            window.location.reload();
         } else {
             console.log("false")
 
@@ -32,22 +31,22 @@ class Layout extends React.Component {
             })
         }
     }
-    componentWillReceiveProps() {
-        if (this.props.location.pathname === '/') {
-            // styles = { backgroundImage: `url(${homeImg})`, backgroundSize: 'cover', backgroundRepeat: 'no-repeat', backgroundPosition: 'center center' }
-            this.setState({
-                isHome: true,
-                // styles,
-            })
-            window.location.reload();
-        } else {
-            console.log("false")
-
-            styles = { background: 'red' }
-            this.setState({
-                isHome: false,
-                // styles,
-            })
+    componentWillReceiveProps(newProps) {
+        if (newProps !== this.props) {
+            if (this.props.location.pathname === '/') {
+                // styles = { backgroundImage: `url(${homeImg})`, backgroundSize: 'cover', backgroundRepeat: 'no-repeat', backgroundPosition: 'center center' }
+                this.setState({
+                    isHome: true,
+                    // styles,
+                })
+                window.location.reload();
+            } else {
+                this.setState({
+                    isHome: false,
+                    // styles,
+                })
+                window.location.reload();
+            }
         }
     }
     render() {
@@ -60,9 +59,7 @@ class Layout extends React.Component {
         }
         console.log("this.prop s", this.props.location.pathname)
         return (
-            <div className={this.state.isHome ? 'homeback' : 'nonHomeBack'} style={
-                this.state.styles
-            }>
+            <div className={this.state.isHome ? 'homeback' : 'nonHomeBack'} >
                 <Header />
                 <div className="container" style={{ minHeight: 600, marginBottom: 50 }}>
                     {this.props.children}

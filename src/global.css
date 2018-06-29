@@ -29,12 +29,19 @@ p {
      background-size: 'cover';
       background-repeat: 'no-repeat';
        background-position: 'center center';
+       font-size: 18px ;
 }
 
 .nonHomeBack {
     background: #F5F6F7 !important;
+    font-size: 18px ;    
 }
-
+.reg-input , .form-control {
+    font-size: 18px !important;
+}
+.btn {
+    font-size: 18px !important;
+}
 .footerLink {
     font-size: 20px !important;
 }
