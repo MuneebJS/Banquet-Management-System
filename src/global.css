@@ -1,3 +1,44 @@
+
+body {
+    font-family: 'Markazi Text', serif !important;
+    font-size: 18px ;
+}
+
+
+p {
+  line-height: 1.5em  
+}
+
+.links {
+    font-size: 18px;
+    font-family: 'Markazi Text', serif !important;
+}
+
+.logo:hover {
+    color: yellow !important;
+    text-decoration: none !important;
+}
+
+.links:hover {
+    color: yellow !important;
+    /* margin-left: 2px !important; */
+}
+
+.homeback {
+    background-image: 'url(./components/home.jpg)';
+     background-size: 'cover';
+      background-repeat: 'no-repeat';
+       background-position: 'center center';
+}
+
+.nonHomeBack {
+    background: #F5F6F7 !important;
+}
+
+.footerLink {
+    font-size: 20px !important;
+}
+
 .banquetDetailImg {
     height: 500;
     width: 100%;
