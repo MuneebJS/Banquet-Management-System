@@ -7,7 +7,7 @@ import AppBar from 'material-ui/AppBar';
 import { userRef } from '../firebase';
 import * as firebase from 'firebase';
 import Title from '../components/Title';
-import { saveUId } from '../lib/helpers';
+import { saveUId } from '../Lib/helpers';
 import Error from '../components/Error';
 import { checkAuthSuccess } from '../actions/index';
 import { connect } from 'react-redux';
