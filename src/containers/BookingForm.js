@@ -1,25 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { firebaseApp, reservationRef } from '../firebase.js';
+import { reservationRef } from '../firebase.js';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import DatePicker from 'material-ui/DatePicker';
-import AppBar from 'material-ui/AppBar';
-import Drawer from 'material-ui/Drawer';
-import { Card, CardHeader } from 'material-ui/Card';
-import { List, ListItem } from 'material-ui/List';
-import Divider from 'material-ui/Divider';
-import { blue500 } from 'material-ui/styles/colors';
-import Person from 'material-ui/svg-icons/social/person';
-import Avatar from 'material-ui/Avatar';
-import { NavLink } from 'react-router-dom';
-import FlatButton from 'material-ui/FlatButton';
-import Logout from 'material-ui/svg-icons/action/power-settings-new';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import Loader from '../components/Loader';
 import Title from '../components/Title';
 import Error from '../components/Error';
-import { getUID } from '../lib/helpers.js';
+import { getUID } from '../Lib/helpers.js';
 import { withRouter } from 'react-router-dom';
 
 import ReservationDates from './ReservationDates';

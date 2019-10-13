@@ -6,7 +6,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 import { userRef } from '../firebase';
 import Error from '../components/Error';
-import { saveUId } from '../lib/helpers';
+import { saveUId } from '../Lib/helpers';
 import { connect } from 'react-redux';
 import { checkAuthSuccess } from '../actions/index';
 

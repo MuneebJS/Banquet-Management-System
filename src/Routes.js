@@ -1,22 +1,15 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import registerServiceWorker from './registerServiceWorker';
 import './global.css';
 
 import app from './containers/app.js';
 import SignUp from './containers/SignUp.js';
 import SignIn from './containers/SignIn.js';
-// import list from './containers/BanquetList';
-import { Router, Route, BrowserRouter } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import createBrowserHistory from 'history/createBrowserHistory';
-import { Provider, connects } from 'react-redux'
 import { createStore, applyMiddleware } from 'redux'
 import { Switch, withRouter } from 'react-router-dom';
-import { firebaseApp } from './firebase'
 import reducer from './reducers'
-import { logUser } from './actions'
-import Bootstrap from 'bootstrap/dist/css/bootstrap.css';
-import BanquetList from './containers/BanquetList';
+import BanquetList from './containers/banquetList';
 import NMG from './containers/NMG';
 import AddBanquet from './containers/AddBanquet';
 import AdminDashboard from './containers/AdminDashboard';
@@ -24,17 +17,12 @@ import UserDashboard from './containers/UserDashboard';
 import PrivateRoute from './PrivateRoute';
 import thunk from 'redux-thunk'
 
-import Majestic from './containers/Majestic';
+import Majestic from './containers/majestic';
 import BanquetDetail from './containers/BanquetDetail';
-import Header from './components/Header';
 import BookingForm from './containers/BookingForm';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Home from './components/Home';
-import throttle from 'lodash/throttle';
-import { saveState, loadState } from './lib/helpers';
 import { persistStore, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage';
-import { PersistGate } from 'redux-persist/integration/react'
 import Layout from './Layout';
 import AboutUs from './components/AboutUs';
 import UpdateBanquet from './containers/UpdateBanquet';

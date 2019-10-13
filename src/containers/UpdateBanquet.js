@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom'
-import { firebaseApp } from '../firebase';
-import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import TimePicker from 'material-ui/TimePicker';
 import AppBar from 'material-ui/AppBar';
 import { banquetRef, banquetImagesRef } from '../firebase';
 import Error from '../components/Error';
 import Title from '../components/Title';
-import { getUID } from '../lib/helpers';
+import { getUID } from '../Lib/helpers';
 import FileBase64 from 'react-file-base64';
 import * as firebase from 'firebase';
 import lodash from 'lodash';
