@@ -13,7 +13,7 @@
     "lodash": "^4.17.10",
     "material-design-icons": "^3.0.1",
     "material-ui": "^0.18.7",
-    "moment": "^2.22.1",
+    "moment": "^2.29.4",
     "react": "^15.6.1",
     "react-bootstrap": "^0.32.1",
     "react-bootstrap-table": "^4.3.1",
